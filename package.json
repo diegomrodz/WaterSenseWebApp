@@ -23,6 +23,9 @@
     "sails": "~0.12.3",
     "sails-disk": "~0.10.9"
   },
+  "engines" : {
+    "node" : "5.10.x"
+  },
   "scripts": {
     "debug": "node debug app.js",
     "start": "node app.js"
