@@ -13,6 +13,10 @@ module.exports = {
 
   sensor_detail: function (req, res) {
     res.view('db/sensor/detail', { layout: null });
+  },
+
+  sensor_detail_ext_temp: function (req, res) {
+    res.view('db/sensor/ext_temp', { layout: null });
   }
 
 };

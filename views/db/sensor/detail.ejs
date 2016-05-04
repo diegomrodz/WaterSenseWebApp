@@ -1,5 +1,5 @@
 
-<div class="row">
+<div class="row" style="margin-top: 20px;">
   <h3 style="text-transform: uppercase;">{{ sensor.nickname }}</h3>
 
   <p>{{ sensor.description }}</p>
@@ -10,7 +10,7 @@
   <div class="col-xs-12 col-xl-6">
 
     <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.ext_temp_active">
-      <h4>Temperatura Externa</h4>
+      <h4>Temperatura Externa <a href="#/sensor/{{sensor.id}}/ext_temp" style="float:right;"><i class="fa fa-binoculars"></i></a></h4>
 
       <p>Medição contínua da temperatura ambiente.</p>
 
@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.water_temp_active">
-      <h4>Temperatura da Água</h4>
+      <h4>Temperatura da Água <a href="#/sensor/{{sensor.id}}/water_temp" style="float:right;"><i class="fa fa-binoculars"></i></a></h4>
 
       <p>Medição contínua da temperatura da água</p>
 
@@ -27,7 +27,7 @@
     </div>
 
     <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.luminosity_active">
-      <h4>Luminosidade</h4>
+      <h4>Luminosidade <a href="#/sensor/{{sensor.id}}/luminosity" style="float:right;"><i class="fa fa-binoculars"></i></a></h4>
 
       <p>Medição contínua da temperatura da luminosidade da água</p>
 
@@ -35,7 +35,7 @@
     </div>
 
     <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.ph_active">
-      <h4>Luminosidade</h4>
+      <h4>pH <a href="#/sensor/{{sensor.id}}/ph" style="float:right;"><i class="fa fa-binoculars"></i></a></h4>
 
       <p>Medição contínua da temperatura do pH da água</p>
 
