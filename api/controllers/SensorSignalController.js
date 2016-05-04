@@ -11,7 +11,22 @@ module.exports = {
     var options = {
       sort: 'id DESC',
       limit: req.param('limit') || 20,
-      where: { 'sensor' : req.param('sensor') }
+      where: {'sensor': req.param('sensor')}
+    };
+
+    SensorSignal.find(options, function (err, record) {
+      if (record === undefined) return res.notFound();
+      if (err) return next(err);
+
+      res.json(record);
+    });
+  },
+
+  realtime_ext_temp: function (req, res, next) {
+    var options = {
+      where: {'sensor': req.param('sensor')},
+      limit: req.param('limit') || 1000,
+      sort: 'id DESC'
     };
 
     SensorSignal.find(options, function (err, record) {

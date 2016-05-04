@@ -36,7 +36,10 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'get /interval': 'SensorSignalController.interval'
+  'GET /realtime/ext_temp' : {
+    controller: 'SensorSignalController',
+    action: 'realtime_ext_temp'
+  }
 
   /***************************************************************************
   *                                                                          *
