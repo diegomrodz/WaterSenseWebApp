@@ -1,0 +1,27 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div style="margin-top: 35px;" class="input-group"> <span class="input-group-addon"><i class="zmdi zmdi-search"></i></span>
+      <input type="text" class="form-control" placeholder="Buscar Sensor" aria-describedby="basic-addon1">
+    </div>
+  </div>
+</div>
+
+<div class="row" style="margin-top: 25px;">
+  <div ng-repeat="sensor in sensorList" class="col-xs-12 col-md-6 col-lg-4">
+    <div class="card user-card-1" style="min-height:180px;">
+
+      <a href="#/sensor/{{sensor.id}}">
+        <div class="card-block">
+
+          <h4 class="card-title"> {{sensor.nickname}} <span style="float:right;"><i class="fa fa-wifi"></i></span> </h4>
+          <p class="card-text">{{sensor.description}}</p>
+
+          <p class="card-text">
+            <small class="text-muted">@senac</small>
+          </p>
+        </div>
+      </a>
+    </div>
+  </div>
+
+</div>

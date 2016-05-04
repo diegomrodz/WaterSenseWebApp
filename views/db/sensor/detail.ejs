@@ -1,0 +1,77 @@
+
+<div class="row">
+  <h3 style="text-transform: uppercase;">{{ sensor.nickname }}</h3>
+
+  <p>{{ sensor.description }}</p>
+
+</div>
+
+<div class="row">
+  <div class="col-xs-12 col-xl-6">
+
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.ext_temp_active">
+      <h4>Temperatura Externa</h4>
+
+      <p>Medição contínua da temperatura ambiente.</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.water_temp_active">
+      <h4>Temperatura da Água</h4>
+
+      <p>Medição contínua da temperatura da água</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="waterTempDataset" chartist-chart-type="Line"></chartist>
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.luminosity_active">
+      <h4>Luminosidade</h4>
+
+      <p>Medição contínua da temperatura da luminosidade da água</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="luminosityDataset" chartist-chart-type="Line"></chartist>
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.ph_active">
+      <h4>Luminosidade</h4>
+
+      <p>Medição contínua da temperatura do pH da água</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="phDataset" chartist-chart-type="Line"></chartist>
+    </div>
+
+  </div>
+
+  <div class="col-xs-12 col-xl-6">
+
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice">
+      <h4>Detalhes do Dispositivo</h4>
+
+      <div class="row">
+        <div class="col-sm-3">ID:</div>
+        <div class="col-sm-9">{{ sensor.id }}</div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3">Tipo:</div>
+        <div class="col-sm-9">{{ sensor.device }}</div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3">Ativo Desde:</div>
+        <div class="col-sm-9">{{ sensor.createdAt }}</div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3">Usuário:</div>
+        <div class="col-sm-9"><a href="">@senac</a></div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+

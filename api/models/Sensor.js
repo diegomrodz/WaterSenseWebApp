@@ -10,9 +10,42 @@ module.exports = {
 
   attributes: {
 
-    user_id: {
+    user: {
       type: 'integer',
       required: true
+    },
+
+    nickname: {
+      type: 'string',
+      required: true,
+      unique: true
+    },
+
+    device: {
+      type: 'string'
+    },
+
+    description: {
+      type: 'string'
+    },
+
+    ext_temp_active: {
+      type: 'boolean',
+      defaultsTo: true
+    },
+
+    water_temp_active: {
+      type: 'boolean',
+      defaultsTo: true
+    },
+
+    luminosity_active: {
+      type: 'boolean',
+      defaultsTo: true
+    },
+
+    ph_active: {
+      type: 'boolean'
     }
 
   }

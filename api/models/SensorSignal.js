@@ -9,7 +9,7 @@ module.exports = {
 
   attributes: {
 
-    sensor_id: {
+    sensor: {
       type: 'integer',
       required: true
     },
@@ -28,10 +28,6 @@ module.exports = {
 
     ph: {
       type: 'float'
-    },
-
-    created_at: {
-      type: 'datetime'
     }
 
   }
