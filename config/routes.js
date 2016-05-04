@@ -36,11 +36,6 @@ module.exports.routes = {
     view: 'homepage'
   },
 
-  'GET /realtime/ext_temp' : {
-    controller: 'SensorSignalController',
-    action: 'realtime_ext_temp'
-  }
-
   /***************************************************************************
   *                                                                          *
   * Custom routes here...                                                    *

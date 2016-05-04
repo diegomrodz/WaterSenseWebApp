@@ -31,10 +31,10 @@
     function () {
       var self = this;
 
-      self.find = function (sensor, callback) {
+      self.last1000 = function (sensor, callback) {
         $.post({
-          url: url_api("/realtime/ext_temp"),
-          data: { 'sensor': sensor  },
+          url: url_api("/SensorSignal/interval"),
+          data: { 'sensor': sensor, 'limit': 1000  },
           type: 'get',
           dataType: 'json'
         }).done(function (data) {
@@ -180,7 +180,7 @@
         $scope.$apply(function () {
           $scope.sensor = s;
 
-          SensorSignalRepository.find(s.id, function (records) {
+          SensorSignalRepository.last1000(s.id, function (records) {
             records.reverse();
 
             $scope.$apply(function () {
@@ -198,6 +198,396 @@
       });
     }
   ]);
+
+  WaterSenseApplication.controller('DetailWaterTempSensorCtrl',
+    ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'SensorSignalRepository',
+      function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
+        $scope.sensor = {};
+
+        $scope.waterTempDataset = [];
+
+        $scope.dataFromPromise = function(){
+          var deferred = $q.defer();
+
+          var data = $scope.waterTempDataset;
+
+          deferred.resolve(data);
+
+          return deferred.promise;
+        };
+
+        $scope.waterTempChartOptions = $timeout(function () {
+          return {
+            "type": "serial",
+            "theme": "none",
+            "marginRight": 40,
+            "marginLeft": 40,
+            "autoMarginOffset": 20,
+            "mouseWheelZoomEnabled": true,
+            "dataDateFormat": "YYYY-M-D H:N",
+            "valueAxes": [{
+              "id": "v1",
+              "axisAlpha": 0,
+              "position": "left",
+              "ignoreAxisWidth": true
+            }],
+            "balloon": {
+              "borderThickness": 1,
+              "shadowAlpha": 0
+            },
+            "graphs": [{
+              "id": "g1",
+              "balloon": {
+                "drop": true,
+                "adjustBorderColor": false,
+                "color": "#ffffff"
+              },
+              "bullet": "round",
+              "bulletBorderAlpha": 1,
+              "bulletColor": "#FFFFFF",
+              "bulletSize": 5,
+              "hideBulletsCount": 50,
+              "lineThickness": 2,
+              "title": "red line",
+              "useLineColorForBulletBorder": true,
+              "valueField": "value",
+              "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+            }],
+            "chartScrollbar": {
+              "graph": "g1",
+              "oppositeAxis": false,
+              "offset": 30,
+              "scrollbarHeight": 40,
+              "backgroundAlpha": 0,
+              "selectedBackgroundAlpha": 0.1,
+              "selectedBackgroundColor": "#888888",
+              "graphFillAlpha": 0,
+              "graphLineAlpha": 0.5,
+              "selectedGraphFillAlpha": 0,
+              "selectedGraphLineAlpha": 1,
+              "autoGridCount": true,
+              "color": "#AAAAAA"
+            },
+            "chartCursor": {
+              "pan": true,
+              "valueLineEnabled": true,
+              "valueLineBalloonEnabled": true,
+              "cursorAlpha": 1,
+              "cursorColor": "#258cbb",
+              "limitToGraph": "g1",
+              "valueLineAlpha": 0.2,
+              "valueZoomable": true
+            },
+            "valueScrollbar": {
+              "oppositeAxis": false,
+              "offset": 50,
+              "scrollbarHeight": 10
+            },
+            "categoryField": "date",
+            "categoryAxis": {
+              "parseDates": false,
+              "dashLength": 1,
+              "minorGridEnabled": true,
+              "autoWrap": true,
+              "labelFrequency" : 3
+            },
+            "export": {
+              "enabled": true
+            },
+            "data": $scope.dataFromPromise()
+          };
+        }, 1000);
+
+        function formatDate(d) {
+          return d.getFullYear() + "-" +
+            d.getMonth() + "-" +
+            d.getDay() + " " +
+            d.getHours() + ":" +
+            d.getMinutes();
+        }
+
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.$apply(function () {
+            $scope.sensor = s;
+
+            SensorSignalRepository.last1000(s.id, function (records) {
+              records.reverse();
+
+              $scope.$apply(function () {
+                $scope.waterTempDataset = _.map(records, function (e, key) {
+                  var d = new Date(e.createdAt);
+                  return {
+                    date: formatDate(d),
+                    value: e.water_temp
+                  }
+                });
+              });
+
+            });
+          });
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('DetailLuminositySensorCtrl',
+    ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'SensorSignalRepository',
+      function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
+        $scope.sensor = {};
+
+        $scope.luminosityDataset = [];
+
+        $scope.dataFromPromise = function(){
+          var deferred = $q.defer();
+
+          var data = $scope.luminosityDataset;
+
+          deferred.resolve(data);
+
+          return deferred.promise;
+        };
+
+        $scope.luminosityChartOptions = $timeout(function () {
+          return {
+            "type": "serial",
+            "theme": "none",
+            "marginRight": 40,
+            "marginLeft": 40,
+            "autoMarginOffset": 20,
+            "mouseWheelZoomEnabled": true,
+            "dataDateFormat": "YYYY-M-D H:N",
+            "valueAxes": [{
+              "id": "v1",
+              "axisAlpha": 0,
+              "position": "left",
+              "ignoreAxisWidth": true
+            }],
+            "balloon": {
+              "borderThickness": 1,
+              "shadowAlpha": 0
+            },
+            "graphs": [{
+              "id": "g1",
+              "balloon": {
+                "drop": true,
+                "adjustBorderColor": false,
+                "color": "#ffffff"
+              },
+              "bullet": "round",
+              "bulletBorderAlpha": 1,
+              "bulletColor": "#FFFFFF",
+              "bulletSize": 5,
+              "hideBulletsCount": 50,
+              "lineThickness": 2,
+              "title": "red line",
+              "useLineColorForBulletBorder": true,
+              "valueField": "value",
+              "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+            }],
+            "chartScrollbar": {
+              "graph": "g1",
+              "oppositeAxis": false,
+              "offset": 30,
+              "scrollbarHeight": 40,
+              "backgroundAlpha": 0,
+              "selectedBackgroundAlpha": 0.1,
+              "selectedBackgroundColor": "#888888",
+              "graphFillAlpha": 0,
+              "graphLineAlpha": 0.5,
+              "selectedGraphFillAlpha": 0,
+              "selectedGraphLineAlpha": 1,
+              "autoGridCount": true,
+              "color": "#AAAAAA"
+            },
+            "chartCursor": {
+              "pan": true,
+              "valueLineEnabled": true,
+              "valueLineBalloonEnabled": true,
+              "cursorAlpha": 1,
+              "cursorColor": "#258cbb",
+              "limitToGraph": "g1",
+              "valueLineAlpha": 0.2,
+              "valueZoomable": true
+            },
+            "valueScrollbar": {
+              "oppositeAxis": false,
+              "offset": 50,
+              "scrollbarHeight": 10
+            },
+            "categoryField": "date",
+            "categoryAxis": {
+              "parseDates": false,
+              "dashLength": 1,
+              "minorGridEnabled": true,
+              "autoWrap": true,
+              "labelFrequency" : 3
+            },
+            "export": {
+              "enabled": true
+            },
+            "data": $scope.dataFromPromise()
+          };
+        }, 1000);
+
+        function formatDate(d) {
+          return d.getFullYear() + "-" +
+            d.getMonth() + "-" +
+            d.getDay() + " " +
+            d.getHours() + ":" +
+            d.getMinutes();
+        }
+
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.$apply(function () {
+            $scope.sensor = s;
+
+            SensorSignalRepository.last1000(s.id, function (records) {
+              records.reverse();
+
+              $scope.$apply(function () {
+                $scope.luminosityDataset = _.map(records, function (e, key) {
+                  var d = new Date(e.createdAt);
+                  return {
+                    date: formatDate(d),
+                    value: e.luminosity
+                  }
+                });
+              });
+
+            });
+          });
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('DetailPHSensorCtrl',
+    ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'SensorSignalRepository',
+      function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
+        $scope.sensor = {};
+
+        $scope.pHDataset = [];
+
+        $scope.dataFromPromise = function(){
+          var deferred = $q.defer();
+
+          var data = $scope.pHDataset;
+
+          deferred.resolve(data);
+
+          return deferred.promise;
+        };
+
+        $scope.pHChartOptions = $timeout(function () {
+          return {
+            "type": "serial",
+            "theme": "none",
+            "marginRight": 40,
+            "marginLeft": 40,
+            "autoMarginOffset": 20,
+            "mouseWheelZoomEnabled": true,
+            "dataDateFormat": "YYYY-M-D H:N",
+            "valueAxes": [{
+              "id": "v1",
+              "axisAlpha": 0,
+              "position": "left",
+              "ignoreAxisWidth": true
+            }],
+            "balloon": {
+              "borderThickness": 1,
+              "shadowAlpha": 0
+            },
+            "graphs": [{
+              "id": "g1",
+              "balloon": {
+                "drop": true,
+                "adjustBorderColor": false,
+                "color": "#ffffff"
+              },
+              "bullet": "round",
+              "bulletBorderAlpha": 1,
+              "bulletColor": "#FFFFFF",
+              "bulletSize": 5,
+              "hideBulletsCount": 50,
+              "lineThickness": 2,
+              "title": "red line",
+              "useLineColorForBulletBorder": true,
+              "valueField": "value",
+              "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+            }],
+            "chartScrollbar": {
+              "graph": "g1",
+              "oppositeAxis": false,
+              "offset": 30,
+              "scrollbarHeight": 40,
+              "backgroundAlpha": 0,
+              "selectedBackgroundAlpha": 0.1,
+              "selectedBackgroundColor": "#888888",
+              "graphFillAlpha": 0,
+              "graphLineAlpha": 0.5,
+              "selectedGraphFillAlpha": 0,
+              "selectedGraphLineAlpha": 1,
+              "autoGridCount": true,
+              "color": "#AAAAAA"
+            },
+            "chartCursor": {
+              "pan": true,
+              "valueLineEnabled": true,
+              "valueLineBalloonEnabled": true,
+              "cursorAlpha": 1,
+              "cursorColor": "#258cbb",
+              "limitToGraph": "g1",
+              "valueLineAlpha": 0.2,
+              "valueZoomable": true
+            },
+            "valueScrollbar": {
+              "oppositeAxis": false,
+              "offset": 50,
+              "scrollbarHeight": 10
+            },
+            "categoryField": "date",
+            "categoryAxis": {
+              "parseDates": false,
+              "dashLength": 1,
+              "minorGridEnabled": true,
+              "autoWrap": true,
+              "labelFrequency" : 3
+            },
+            "export": {
+              "enabled": true
+            },
+            "data": $scope.dataFromPromise()
+          };
+        }, 1000);
+
+        function formatDate(d) {
+          return d.getFullYear() + "-" +
+            d.getMonth() + "-" +
+            d.getDay() + " " +
+            d.getHours() + ":" +
+            d.getMinutes();
+        }
+
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.$apply(function () {
+            $scope.sensor = s;
+
+            SensorSignalRepository.last1000(s.id, function (records) {
+              records.reverse();
+
+              $scope.$apply(function () {
+                $scope.pHDataset = _.map(records, function (e, key) {
+                  var d = new Date(e.createdAt);
+                  return {
+                    date: formatDate(d),
+                    value: e.ph
+                  }
+                });
+              });
+
+            });
+          });
+        });
+      }
+    ]);
 
 
   WaterSenseApplication.controller('DetailSensorCtrl',
@@ -315,6 +705,18 @@
           .when('/sensor/:sensorId/ext_temp', {
             templateUrl: url_view('/sensor_detail_ext_temp'),
             controller: 'DetailExtTempSensorCtrl'
+          })
+          .when('/sensor/:sensorId/water_temp', {
+            templateUrl: url_view('/sensor_detail_water_temp'),
+            controller: 'DetailWaterTempSensorCtrl'
+          })
+          .when('/sensor/:sensorId/luminosity', {
+            templateUrl: url_view('/sensor_detail_luminosity'),
+            controller: 'DetailLuminositySensorCtrl'
+          })
+          .when('/sensor/:sensorId/ph', {
+            templateUrl: url_view('/sensor_detail_ph'),
+            controller: 'DetailPHSensorCtrl'
           });
     }
   ]);
