@@ -33,7 +33,7 @@
 
       self.last1000 = function (sensor, callback) {
         $.post({
-          url: url_api("/SensorSignal/interval"),
+          url: url_api("/SensorSignal/find"),
           data: {'sensor': sensor, 'limit': 1000},
           type: 'get',
           dataType: 'json'
@@ -44,13 +44,25 @@
 
       self.last20 = function (sensor, callback) {
         $.post({
-          url: url_api("/SensorSignal/interval"),
+          url: url_api("/SensorSignal/find"),
           data: {'sensor': sensor},
           type: 'get',
           dataType: 'json'
         }).done(function (data) {
           callback(data);
         });
+      };
+
+      self.today = function (sensor, callback) {
+        $.post({
+          url: url_api("/SensorSignal/interval"),
+          data: {'sensor': sensor, 'period': 'today'},
+          type: 'get',
+          dataType: 'json'
+        }).done(function (data) {
+          callback(data);
+        });
+
       };
 
     }
@@ -94,7 +106,7 @@
             "marginLeft": 40,
             "autoMarginOffset": 20,
             "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "YYYY-M-D H:N",
+            "dataDateFormat": "H:N:S",
             "valueAxes": [{
               "id": "v1",
               "axisAlpha": 0,
@@ -159,7 +171,7 @@
               "dashLength": 1,
               "minorGridEnabled": true,
               "autoWrap": true,
-              "labelFrequency": 3
+              "labelsEnabled": false
             },
             "export": {
               "enabled": true
@@ -169,17 +181,16 @@
         }, 1000);
 
         function formatDate(d) {
-          return d.getMonth() + "/" +
-            d.getDay() + " " +
-            d.getHours() + ":" +
-            d.getMinutes();
+          return d.getHours() + ":" +
+                 d.getMinutes() + ":" +
+                 d.getSeconds();
         }
 
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.last1000(s.id, function (records) {
+            SensorSignalRepository.today(s.id, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
