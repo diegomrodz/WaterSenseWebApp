@@ -7,6 +7,59 @@
 
 module.exports = {
 
+  all_csv: function (req, res, next) {
+    var query = "SELECT id, DATE_FORMAT(createdAt,'%d/%m/%Y %k:%i:%s') AS timestamp, " + req.param('q') + " FROM sensorsignal"
+              + " WHERE sensor = " + req.param('sensor')
+              + " ORDER BY id DESC";
+
+    SensorSignal.query(query, function(err, list){
+      if (err) console.log(err);
+
+      // Send a CSV response
+      var array = list;
+
+      var str = '';
+      var line = '';
+      var separator = ',';
+
+      var head = array[0];
+      for (var index in array[0]) {
+        if(index != "_typeCast" && index != "parse")
+          line += escape(index) + separator;
+      }
+
+      line = line.slice(0, -1);
+      str += line + '\r\n';
+
+      for (var i = 0; i < array.length; i++) {
+
+        var line = '';
+
+        for (var index in array[i]) {
+          if(index != "_typeCast" && index != "parse")
+            line += escape(array[i][index]) + separator;
+        }
+
+        line = line.slice(0, -1);
+        str += line + '\r\n';
+      }
+
+      function escape( field ) {
+        if (field == undefined) {
+          return '';
+        }
+        field = field + "";
+        return '"' + field.replace(/\"/g, '""') + '"';
+      }
+
+      var d = new Date();
+
+      var filename = req.param('q') + '_' + d.getDate() + '' + d.getMonth() + '' +  d.getFullYear() + '.csv';
+      res.attachment(filename);
+      res.end(str, 'UTF-8');
+    });
+  },
+
   interval: function (req, res, next) {
     var today = new Date();
 
@@ -23,8 +76,14 @@ module.exports = {
       var yesterday = today.getTime() - oneDayDiff;
 
       options["where"]["createdAt"] = { ">" :  new Date(yesterday)};
+    } else if (req.param('period') == 'week') {
+      // One week in milliseconds
+      var oneWeekDiff = (1000 * 60 * 60 * 24) * 7;
+      var week = today.getTime() - oneWeekDiff;
+
+      options["where"]["createdAt"] = { ">" :  new Date(week)};
     } else {
-      options["limit"] = req.params('limit') || 1000;
+      options["limit"] = req.param('limit') || 1000;
     }
 
     SensorSignal.find(options, function (err, record) {

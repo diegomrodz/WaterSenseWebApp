@@ -10,7 +10,13 @@
   <div class="col-xs-12 col-xl-6">
 
     <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.ext_temp_active">
-      <h4>Temperatura Externa <a href="#/sensor/{{sensor.id}}/ext_temp" style="float:right;"><i class="fa fa-binoculars"></i></a></h4>
+      <h4>Temperatura Externa
+        <div style="float: right;">
+          <a href="#/sensor/{{sensor.id}}/ext_temp/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/SensorSignal/all_csv?sensor={{sensor.id}}&q=ext_temp"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/ext_temp/daily" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
 
       <p>Medição contínua da temperatura ambiente.</p>
 
@@ -19,7 +25,13 @@
     </div>
 
     <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.water_temp_active">
-      <h4>Temperatura da Água <a href="#/sensor/{{sensor.id}}/water_temp" style="float:right;"><i class="fa fa-binoculars"></i></a></h4>
+      <h4>Temperatura da Água
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/water_temp/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/SensorSignal/all_csv?sensor={{sensor.id}}&q=water_temp"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/water_temp/daily" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
 
       <p>Medição contínua da temperatura da água</p>
 
@@ -27,17 +39,29 @@
     </div>
 
     <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.luminosity_active">
-      <h4>Luminosidade <a href="#/sensor/{{sensor.id}}/luminosity" style="float:right;"><i class="fa fa-binoculars"></i></a></h4>
+      <h4>Luminosidade
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/luminosity/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/SensorSignal/all_csv?sensor={{sensor.id}}&q=luminosity"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/luminosity/daily" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
 
-      <p>Medição contínua da temperatura da luminosidade da água</p>
+      <p>Medição contínua da luminosidade da água</p>
 
       <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="luminosityDataset" chartist-chart-type="Line"></chartist>
     </div>
 
     <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.ph_active">
-      <h4>pH <a href="#/sensor/{{sensor.id}}/ph" style="float:right;"><i class="fa fa-binoculars"></i></a></h4>
+      <h4>pH
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/ph/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/SensorSignal/all_csv?sensor={{sensor.id}}&q=ph"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/ph/daily" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
 
-      <p>Medição contínua da temperatura do pH da água</p>
+      <p>Medição contínua do pH da água</p>
 
       <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="phDataset" chartist-chart-type="Line"></chartist>
     </div>
@@ -46,7 +70,7 @@
 
   <div class="col-xs-12 col-xl-6">
 
-    <div class="col-sm-12 col-md-12 col-xs-12 invoice">
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;">
       <h4>Detalhes do Dipositivo</h4>
 
       <table class="table table-hover">
@@ -61,7 +85,7 @@
           </tr>
           <tr>
             <td width="25%"><strong>Ativo Desde:</strong></td>
-            <td>{{ sensor.createdAt }}</td>
+            <td>{{ formatCreateDate(sensor.createdAt) }}</td>
           </tr>
           <tr>
             <td width="25%"><strong>Usuário:</strong></td>
@@ -69,6 +93,14 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice">
+      <h4>Localização do Dispositivo</h4>
+
+      <ng-map center="[{{mapLat}},{{mapLng}}]" zoom="17">
+        <marker position="{{mapLat}},{{mapLng}}"></marker>
+      </ng-map>
     </div>
 
   </div>

@@ -1,0 +1,38 @@
+<div class="row" style="margin-top: 20px;">
+  <h3 style="text-transform: uppercase;">{{ sensor.nickname }}</h3>
+  <h4>Temperatura da Água</h4>
+</div>
+
+<div class="h-10"></div>
+
+<div style="width: 100%; padding-top: 15px;" class="col-sm-12 col-xs-12 col-md-12 invoice">
+  <h5>Importância</h5>
+
+  <p>
+    A temperatura da água é de grande importância à medição da qualidade da mesma. Devido a depedência de inúmeros outros
+    fatores, o acompanhamento contínuo desta variável é vital para que qualquer anormalidade seja detectada. Por exemplo,
+    a elevação da temperatura contribui para redução da concentração de oxigênio dissolvido na água, essencial para vida
+    aquática, e a intensificação da taxa de decomposição da matéria orgância, aumentando a demanda bioquímica de
+    oxigênio do ambiente aquático. Do ponto de vista físico, a temperatura é inversamente proporcional a concentração de
+    oxigêncio dissolvido, dessa forma, mais quente, maior a pressão no oxigênio disponível no sistema.
+  </p>
+
+  <p>
+    Não consta na legislação valores máximos e mínimos estipulados para esta variável, entretanto, seu valor é levado em
+    conta no índice IQA (Índice de Qualidade da Águas) da CETESB, que determina um índice <i>q</i> que varia conforme o seguinte
+    gráfico:
+  </p>
+
+  <div class="col-sm-12 col-md-4 col-md-offset-4 col-xs-12">
+    <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="iqaWaterTempDataset" chartist-chart-type="Line"></chartist>
+
+    <small>
+      &#916;T ºC <br>
+      se &#916;T <= -5, indefinido <br>
+      se &#916;T > 15, 9.0
+    </small>
+  </div>
+
+
+
+</div>

@@ -26,7 +26,12 @@ module.exports = {
     },
 
     description: {
-      type: 'string'
+      type: 'string',
+      size: 1024
+    },
+
+    setup_position: {
+      type: 'json'
     },
 
     ext_temp_active: {
