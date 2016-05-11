@@ -49,7 +49,7 @@
       var self = this;
 
       self.last1000 = function (sensor, callback) {
-        $.post({
+        $.ajax({
           url: url_api("/SensorSignal/find"),
           data: {'sensor': sensor, 'limit': 1000},
           type: 'get',
@@ -60,7 +60,7 @@
       };
 
       self.last20 = function (sensor, callback) {
-        $.post({
+        $.ajax({
           url: url_api("/SensorSignal/find"),
           data: {'sensor': sensor},
           type: 'get',
@@ -70,8 +70,19 @@
         });
       };
 
+      self.daily_avg = function (sensor, limit, callback) {
+        $.ajax({
+          url: url_api('/SensorSignal/daily_avg'),
+          data: {'sensor': sensor, 'limit': limit},
+          type: 'get',
+          dataType: 'json'
+        }).done(function (data) {
+          callback(data);
+        });
+      };
+
       self.today = function (sensor, callback) {
-        $.post({
+        $.ajax({
           url: url_api("/SensorSignal/interval"),
           data: {'sensor': sensor, 'period': 'today'},
           type: 'get',
@@ -696,7 +707,7 @@
             $scope.mapLat = data.setup_position.latitude;
             $scope.mapLng = data.setup_position.longitude;
 
-            SensorSignalRepository.last20($routeParams.sensorId, function (data) {
+            SensorSignalRepository.daily_avg($routeParams.sensorId, 20, function (data) {
               $scope.$apply(function () {
 
                 data.reverse();
@@ -705,8 +716,7 @@
 
                   $scope.extTempDataset.labels = _.map(data, function (e, key) {
                     if (key % 5 == 0) {
-                      var d = new Date(e.createdAt);
-                      return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                      return e['DATA'];
                     }
                     return '';
                   });
@@ -721,10 +731,9 @@
                 if ($scope.sensor.water_temp_active) {
                   $scope.waterTempDataset.labels = _.map(data, function (e, key) {
                     if (key % 5 == 0) {
-                      var d = new Date(e.createdAt);
-                      return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                      return e['DATA'];
                     }
-                    return '';
+                    return '';return '';
                   });
 
                   $scope.waterTempDataset.series = [
@@ -737,8 +746,7 @@
                 if ($scope.sensor.luminosity_active) {
                   $scope.luminosityDataset.labels = _.map(data, function (e, key) {
                     if (key % 5 == 0) {
-                      var d = new Date(e.createdAt);
-                      return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                      return e['DATA'];
                     }
                     return '';
                   });
@@ -753,8 +761,7 @@
                 if ($scope.sensor.ph_active) {
                   $scope.phDataset.labels = _.map(data, function (e, key) {
                     if (key % 5 == 0) {
-                      var d = new Date(e.createdAt);
-                      return d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+                      return e['DATA'];
                     }
                     return '';
                   });

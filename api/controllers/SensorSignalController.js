@@ -7,6 +7,12 @@
 
 module.exports = {
 
+  daily_avg: function (req, res, next) {
+    SensorSignalService.getDailyAverage(req, function (data) {
+      return res.json(data);
+    });
+  },
+
   all_csv: function (req, res, next) {
     var query = "SELECT id, DATE_FORMAT(createdAt,'%d/%m/%Y %k:%i:%s') AS timestamp, " + req.param('q') + " FROM sensorsignal"
               + " WHERE sensor = " + req.param('sensor')
