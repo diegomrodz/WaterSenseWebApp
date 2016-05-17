@@ -1,0 +1,45 @@
+<div class="row" style="margin-top: 20px;">
+  <h3 style="text-transform: uppercase;">{{ sensor.nickname }}</h3>
+  <h4>Nova Medição Periódica</h4>
+</div>
+
+<div class="h-10"></div>
+
+<div class="col-sm-12 col-md-12 col-lg-6 col-lg-offset-3 invoice">
+  <fieldset>
+    <legend>Usuário</legend>
+
+    <fieldset class="form-group m-b-20">
+      <input ng-model="userName" type="text" class="form-control" placeholder="Nome">
+    </fieldset>
+
+    <fieldset class="form-group m-b-20">
+      <input ng-model="userEmail" type="text" class="form-control" placeholder="Email">
+    </fieldset>
+
+  </fieldset>
+
+  <fieldset>
+    <legend>Medição</legend>
+
+    <fieldset class="form-group m-b-20">
+      <label class="m-r-20">Variável</label>
+      <select ng-model="variable" class="form-control">
+          <option value="dissolved_o2">Oxigênio Dissolvido</option>
+          <option value="fecal_matter">Coliformes Fecais</option>
+          <option value="dbo">Demanda Bioquímica de O2</option>
+          <option value="total_nitrogen">Nitrogênio Total</option>
+          <option value="total_phosphoruns">Fósforo Total</option>
+          <option value="turbidity">Turbidez</option>
+          <option value="total_solids">Sólidos Totais</option>
+        </select>
+    </fieldset>
+
+    <fieldset class="form-group m-b-20">
+      <input ng-model="measurement" type="number" class="form-control" placeholder="Valor Medido">
+    </fieldset>
+  </fieldset>
+
+  <button ng-click="sendPeriodicMeasurement()" type="button" class="btn btn-success m-r-10 m-b-10 pull-right">Enviar</button>
+
+</div>

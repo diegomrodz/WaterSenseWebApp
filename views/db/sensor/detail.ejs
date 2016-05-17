@@ -1,6 +1,12 @@
 
 <div class="row" style="margin-top: 20px;">
-  <h3 style="text-transform: uppercase;">{{ sensor.nickname }}</h3>
+  <h3 style="text-transform: uppercase;">{{ sensor.nickname }}
+    <a title="Monitorar IQA" style="margin-right: 20px;" class="pull-right" href="#/sensor/{{sensor.id}}/iqa/control">
+      <i class="fa fa-binoculars"></i><br>
+      <small style="font-size: 10px; vertical-align: text-top; margin-left: 5px;">IQA</small>
+    </a>
+    <a title="Nova Medição Periódica" style="margin-right: 20px;" class="pull-right" href="#/sensor/{{sensor.id}}/periodic/new"><i class="fa fa-plus"></i></a>
+  </h3>
 
   <p>{{ sensor.description }}</p>
 
@@ -14,7 +20,7 @@
         <div style="float: right;">
           <a href="#/sensor/{{sensor.id}}/ext_temp/info"><i class="fa fa-info-circle"></i></a>
           <a href="http://localhost:1337/SensorSignal/all_csv?sensor={{sensor.id}}&q=ext_temp"><i class="fa fa-download"></i></a>
-          <a href="#/sensor/{{sensor.id}}/ext_temp/daily" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+          <a href="#/sensor/{{sensor.id}}/ext_temp/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
         </div>
       </h4>
 
@@ -29,7 +35,7 @@
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/water_temp/info"><i class="fa fa-info-circle"></i></a>
           <a href="http://localhost:1337/SensorSignal/all_csv?sensor={{sensor.id}}&q=water_temp"><i class="fa fa-download"></i></a>
-          <a href="#/sensor/{{sensor.id}}/water_temp/daily" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+          <a href="#/sensor/{{sensor.id}}/water_temp/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
         </div>
       </h4>
 
@@ -43,7 +49,7 @@
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/luminosity/info"><i class="fa fa-info-circle"></i></a>
           <a href="http://localhost:1337/SensorSignal/all_csv?sensor={{sensor.id}}&q=luminosity"><i class="fa fa-download"></i></a>
-          <a href="#/sensor/{{sensor.id}}/luminosity/daily" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+          <a href="#/sensor/{{sensor.id}}/luminosity/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
         </div>
       </h4>
 
@@ -57,7 +63,7 @@
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/ph/info"><i class="fa fa-info-circle"></i></a>
           <a href="http://localhost:1337/SensorSignal/all_csv?sensor={{sensor.id}}&q=ph"><i class="fa fa-download"></i></a>
-          <a href="#/sensor/{{sensor.id}}/ph/daily" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+          <a href="#/sensor/{{sensor.id}}/ph/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
         </div>
       </h4>
 
@@ -95,7 +101,29 @@
       </table>
     </div>
 
-    <div class="col-sm-12 col-md-12 col-xs-12 invoice">
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;">
+      <h4>Relatórios</h4>
+
+      <table class="table table-hover">
+        <tr>
+          <td><a href="#/sensor/{{sensor.id}}/report/weekely">Relatório Semanal</a></td>
+        </tr>
+        <tr>
+          <td><a href="#/sensor/{{sensor.id}}/report/monthly">Relatório Mensal</a></td>
+        </tr>
+        <tr>
+          <td><a href="#/sensor/{{sensor.id}}/report/iqa">Relatório IQA (Índice de Qualidade de Águas)</a></td>
+        </tr>
+        <tr>
+          <td><a href="#/sensor/{{sensor.id}}/report/custom">Relatório Customizado</a></td>
+        </tr>
+
+      </table>
+
+    </div>
+
+
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;">
       <h4>Localização do Dispositivo</h4>
 
       <ng-map center="[{{mapLat}},{{mapLng}}]" zoom="17">

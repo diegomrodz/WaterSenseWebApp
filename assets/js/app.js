@@ -61,6 +61,24 @@
     }
   ]);
 
+  WaterSenseApplication.service('PeriodicMeasurementRepository', [
+    function () {
+      var self = this;
+
+      self.create = function (sensor, obj, callback) {
+        $.ajax({
+          url: url_api('/PeriodicMeasurement'),
+          data: _.extend({sensor: sensor}, obj),
+          type: 'post',
+          dataType: 'json'
+        }).done(function (data) {
+          callback(data);
+        });
+      };
+    }
+  ]);
+
+
   WaterSenseApplication.service('SensorSignalRepository', [
     function () {
       var self = this;
@@ -137,7 +155,7 @@
       }
     ]);
 
-  WaterSenseApplication.controller('ExtTempSensorDailyCtrl',
+  WaterSenseApplication.controller('ExtTempSensorControlCtrl',
     ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'SensorSignalRepository',
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
@@ -240,7 +258,7 @@
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 1000, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 2, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -260,7 +278,7 @@
       }
     ]);
 
-  WaterSenseApplication.controller('WaterTempSensorDailyCtrl',
+  WaterSenseApplication.controller('WaterTempSensorControlCtrl',
     ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'SensorSignalRepository',
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
@@ -363,7 +381,7 @@
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 1000, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 2, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -382,7 +400,7 @@
       }
     ]);
 
-  WaterSenseApplication.controller('LuminositySensorDailyCtrl',
+  WaterSenseApplication.controller('LuminositySensorControlCtrl',
     ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'SensorSignalRepository',
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
@@ -485,7 +503,7 @@
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 1000, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 2, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -504,7 +522,7 @@
       }
     ]);
 
-  WaterSenseApplication.controller('PHSensorDailyCtrl',
+  WaterSenseApplication.controller('PHSensorControlCtrl',
     ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'SensorSignalRepository',
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
@@ -607,7 +625,7 @@
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 1000, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 2, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -621,6 +639,32 @@
               });
 
             });
+          });
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('PeriodicNewSensorCtrl',
+    ['$scope', '$routeParams', '$location', 'SensorRepository', 'PeriodicMeasurementRepository',
+      function ($scope, $routeParams, $location, SensorRepository, PeriodicMeasurementRepository) {
+
+        $scope.sendPeriodicMeasurement = function () {
+          var bag = {};
+
+          bag.p_name = $scope.userName;
+          bag.p_email = $scope.userEmail;
+          bag.variable = $scope.variable;
+          bag.measurement = $scope.measurement;
+
+          PeriodicMeasurementRepository.create($scope.sensor.id, bag, function () {
+            alert("Medição enviada com sucesso!");
+            $location.path('/Sensor/' + $scope.sensor.id);
+          });
+        };
+
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.$apply(function () {
+            $scope.sensor = s;
           });
         });
       }
@@ -672,6 +716,69 @@
     ]);
 
   WaterSenseApplication.controller('PHSensorInfoCtrl',
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.sensor = s;
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('DissolvedO2SensorInfoCtrl',
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.sensor = s;
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('FecalMatterSensorInfoCtrl',
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.sensor = s;
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('DBOSensorInfoCtrl',
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.sensor = s;
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('TotalNitrogenSensorInfoCtrl',
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.sensor = s;
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('PhosphorusTotalSensorInfoCtrl',
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.sensor = s;
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('TurbiditySensorInfoCtrl',
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.sensor = s;
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('TotalSolidsSensorInfoCtrl',
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
@@ -800,21 +907,26 @@
           controller: 'DetailSensorCtrl'
         })
 
-        .when('/sensor/:sensorId/ext_temp/daily', {
-          templateUrl: url_view('/sensor_detail_ext_temp_daily'),
-          controller: 'ExtTempSensorDailyCtrl'
+        .when('/sensor/:sensorId/periodic/new', {
+          templateUrl: url_view('/sensor_detail_periodic_new'),
+          controller: 'PeriodicNewSensorCtrl'
         })
-        .when('/sensor/:sensorId/water_temp/daily', {
-          templateUrl: url_view('/sensor_detail_water_temp_daily'),
-          controller: 'WaterTempSensorDailyCtrl'
+
+        .when('/sensor/:sensorId/ext_temp/control', {
+          templateUrl: url_view('/sensor_detail_ext_temp_control'),
+          controller: 'ExtTempSensorControlCtrl'
         })
-        .when('/sensor/:sensorId/luminosity/daily', {
-          templateUrl: url_view('/sensor_detail_luminosity_daily'),
-          controller: 'LuminositySensorDailyCtrl'
+        .when('/sensor/:sensorId/water_temp/control', {
+          templateUrl: url_view('/sensor_detail_water_temp_control'),
+          controller: 'WaterTempSensorControlCtrl'
         })
-        .when('/sensor/:sensorId/ph/daily', {
-          templateUrl: url_view('/sensor_detail_ph_daily'),
-          controller: 'PHSensorDailyCtrl'
+        .when('/sensor/:sensorId/luminosity/control', {
+          templateUrl: url_view('/sensor_detail_luminosity_control'),
+          controller: 'LuminositySensorControlCtrl'
+        })
+        .when('/sensor/:sensorId/ph/control', {
+          templateUrl: url_view('/sensor_detail_ph_control'),
+          controller: 'PHSensorControlCtrl'
         })
 
         .when('/sensor/:sensorId/ext_temp/info', {
@@ -832,8 +944,35 @@
         .when('/sensor/:sensorId/ph/info', {
           templateUrl: url_view('/sensor_detail_ph_info'),
           controller: 'PHSensorInfoCtrl'
+        })
+        .when('/sensor/:sensorId/dissolvel_o2/info', {
+          templateUrl: url_view('/sensor_detail_dissolved_o2_info'),
+          controller: 'DissolvedO2SensorInfoCtrl'
+        })
+        .when('/sensor/:sensorId/fecal_matter/info', {
+          templateUrl: url_view('/sensor_detail_fecal_matter_info'),
+          controller: 'FecalMatterSensorInfoCtrl'
+        })
+        .when('/sensor/:sensorId/dbo/info', {
+          templateUrl: url_view('/sensor_detail_dbo_info'),
+          controller: 'DBOSensorInfoCtrl'
+        })
+        .when('/sensor/:sensorId/total_nitrogen/info', {
+          templateUrl: url_view('/sensor_detail_total_nitrogen_info'),
+          controller: 'TotalNitrogenSensorInfoCtrl'
+        })
+        .when('/sensor/:sensorId/phosphorus_total/info', {
+          templateUrl: url_view('/sensor_detail_phosphorus_info'),
+          controller: 'PhosphorusTotalSensorInfoCtrl'
+        })
+        .when('/sensor/:sensorId/turbidity/info', {
+          templateUrl: url_view('/sensor_detail_turbidity_info'),
+          controller: 'TurbiditySensorInfoCtrl'
+        })
+        .when('/sensor/:sensorId/total_solids/info', {
+          templateUrl: url_view('/sensor_detail_total_solids_info'),
+          controller: 'TotalSolidsSensorInfoCtrl'
         });
-
     }
   ]);
 

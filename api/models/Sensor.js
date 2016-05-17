@@ -49,6 +49,41 @@ module.exports = {
       defaultsTo: true
     },
 
+    dissolved_o2_active: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
+    fecal_matter_active: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
+    dbo_active: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
+    total_nitrogen_active: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
+    phosphorus_total_acive: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
+    turbidity_active: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
+    total_solids_active: {
+      type: 'boolean',
+      defaultsTo: false
+    },
+
     ph_active: {
       type: 'boolean'
     }

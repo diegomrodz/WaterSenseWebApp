@@ -15,20 +15,24 @@ module.exports = {
     res.view('db/sensor/detail', { layout: null });
   },
 
-  sensor_detail_ext_temp_daily: function (req, res) {
-    res.view('db/sensor/daily/ext_temp', { layout: null });
+  sensor_detail_periodic_new: function (req, res) {
+    res.view('db/sensor/periodic/new', { layout: null });
   },
 
-  sensor_detail_water_temp_daily: function (req, res) {
-    res.view('db/sensor/daily/water_temp', { layout: null });
+  sensor_detail_ext_temp_control: function (req, res) {
+    res.view('db/sensor/control/ext_temp', { layout: null });
   },
 
-  sensor_detail_luminosity_daily: function (req, res) {
-    res.view('db/sensor/daily/luminosity', { layout: null });
+  sensor_detail_water_temp_control: function (req, res) {
+    res.view('db/sensor/control/water_temp', { layout: null });
   },
 
-  sensor_detail_ph_daily: function (req, res) {
-    res.view('db/sensor/daily/ph', { layout: null });
+  sensor_detail_luminosity_control: function (req, res) {
+    res.view('db/sensor/control/luminosity', { layout: null });
+  },
+
+  sensor_detail_ph_control: function (req, res) {
+    res.view('db/sensor/control/ph', { layout: null });
   },
 
   sensor_detail_ext_temp_info: function (req, res) {
@@ -45,6 +49,34 @@ module.exports = {
 
   sensor_detail_ph_info: function (req, res) {
     res.view('db/sensor/info/ph', { layout: null });
+  },
+
+  sensor_detail_dissolved_o2_info: function (req, res) {
+    res.view('db/sensor/info/dissolved_o2', { layout: null });
+  },
+
+  sensor_detail_fecal_matter_info: function (req, res) {
+    res.view('db/sensor/info/fecal_matter', { layout: null });
+  },
+
+  sensor_detail_dbo_info: function (req, res) {
+    res.view('db/sensor/info/dbo', { layout: null });
+  },
+
+  sensor_detail_total_nitrogen_info: function (req, res) {
+    res.view('db/sensor/info/total_nitrogen', { layout: null });
+  },
+
+  sensor_detail_phosphorus_total_info: function (req, res) {
+    res.view('db/sensor/info/phosphorus_total', { layout: null });
+  },
+
+  sensor_detail_turbidity_info: function (req, res) {
+    res.view('db/sensor/info/turbidity', { layout: null });
+  },
+
+  sensor_detail_total_solids_info: function (req, res) {
+    res.view('db/sensor/info/total_solids', { layout: null });
   }
 
 };
