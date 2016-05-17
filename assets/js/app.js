@@ -9,6 +9,23 @@
     return 'http://localhost:1337' + path;
   }
 
+  function digestDate(dateString) {
+    var day = dateString.slice(0, 2);
+    var month = dateString.slice(3, 5);
+    var year = dateString.slice(6, 10);
+    var hour = dateString.slice(11, 14);
+
+    return new Date(year, month, day, hour);
+  }
+
+  function formatDate(date) {
+    return date.getMonth() + "/" + date.getDate() + " " + date.getHours();
+  }
+
+  function digestAvgValue(valueString) {
+    return parseFloat(valueString, 10).toFixed(3);
+  }
+
   WaterSenseApplication.service('IQA', [
     function () {
       var self = this;
@@ -81,6 +98,17 @@
         });
       };
 
+      self.hourly_avg = function (sensor, limit, callback) {
+        $.ajax({
+          url: url_api('/SensorSignal/hourly_avg'),
+          data: {'sensor': sensor, 'limit': limit},
+          type: 'get',
+          dataType: 'json'
+        }).done(function (data) {
+          callback(data);
+        });
+      };
+
       self.today = function (sensor, callback) {
         $.ajax({
           url: url_api("/SensorSignal/interval"),
@@ -134,7 +162,7 @@
             "marginLeft": 40,
             "autoMarginOffset": 20,
             "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "H:N:S",
+            "dataDateFormat": "MM/DD HHh",
             "valueAxes": [{
               "id": "v1",
               "axisAlpha": 0,
@@ -161,7 +189,7 @@
               "title": "red line",
               "useLineColorForBulletBorder": true,
               "valueField": "value",
-              "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+              "balloonText": "<span style='font-size:14px;'>[[value]]</span>"
             }],
             "chartScrollbar": {
               "graph": "g1",
@@ -208,25 +236,19 @@
           };
         }, 1000);
 
-        function formatDate(d) {
-          return d.getHours() + ":" +
-                 d.getMinutes() + ":" +
-                 d.getSeconds();
-        }
-
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.today(s.id, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 1000, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
                 $scope.extTempDataset = _.map(records, function (e, key) {
-                  var d = new Date(e.createdAt);
+                  var d = digestDate(e.DATA);
                   return {
                     date: formatDate(d),
-                    value: e.ext_temp
+                    value: digestAvgValue(e.ext_temp)
                   }
                 });
               });
@@ -263,7 +285,7 @@
             "marginLeft": 40,
             "autoMarginOffset": 20,
             "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "YYYY-M-D H:N",
+            "dataDateFormat": "MM/DD HHh",
             "valueAxes": [{
               "id": "v1",
               "axisAlpha": 0,
@@ -290,7 +312,7 @@
               "title": "red line",
               "useLineColorForBulletBorder": true,
               "valueField": "value",
-              "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+              "balloonText": "<span style='font-size:14px;'>[[value]]</span>"
             }],
             "chartScrollbar": {
               "graph": "g1",
@@ -337,25 +359,19 @@
           };
         }, 1000);
 
-        function formatDate(d) {
-          return d.getHours() + ":" +
-                 d.getMinutes() + ":" +
-                 d.getSeconds();
-        }
-
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.today(s.id, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 1000, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
                 $scope.waterTempDataset = _.map(records, function (e, key) {
-                  var d = new Date(e.createdAt);
+                  var d = digestDate(e.DATA);
                   return {
                     date: formatDate(d),
-                    value: e.water_temp
+                    value: digestAvgValue(e.water_temp)
                   }
                 });
               });
@@ -391,7 +407,7 @@
             "marginLeft": 40,
             "autoMarginOffset": 20,
             "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "YYYY-M-D H:N",
+            "dataDateFormat": "MM/DD HHh",
             "valueAxes": [{
               "id": "v1",
               "axisAlpha": 0,
@@ -418,7 +434,7 @@
               "title": "red line",
               "useLineColorForBulletBorder": true,
               "valueField": "value",
-              "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+              "balloonText": "<span style='font-size:14px;'>[[value]]</span>"
             }],
             "chartScrollbar": {
               "graph": "g1",
@@ -465,25 +481,19 @@
           };
         }, 1000);
 
-        function formatDate(d) {
-          return d.getHours() + ":" +
-                 d.getMinutes() + ":" +
-                 d.getSeconds();
-        }
-
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.today(s.id, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 1000, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
                 $scope.luminosityDataset = _.map(records, function (e, key) {
-                  var d = new Date(e.createdAt);
+                  var d = digestDate(e.DATA);
                   return {
                     date: formatDate(d),
-                    value: e.luminosity
+                    value: digestAvgValue(e.luminosity)
                   }
                 });
               });
@@ -519,7 +529,7 @@
             "marginLeft": 40,
             "autoMarginOffset": 20,
             "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "YYYY-M-D H:N",
+            "dataDateFormat": "MM/DD HHh",
             "valueAxes": [{
               "id": "v1",
               "axisAlpha": 0,
@@ -546,7 +556,7 @@
               "title": "red line",
               "useLineColorForBulletBorder": true,
               "valueField": "value",
-              "balloonText": "<span style='font-size:18px;'>[[value]]</span>"
+              "balloonText": "<span style='font-size:14px;'>[[value]]</span>"
             }],
             "chartScrollbar": {
               "graph": "g1",
@@ -593,25 +603,19 @@
           };
         }, 1000);
 
-        function formatDate(d) {
-          return d.getHours() + ":" +
-                 d.getMinutes() + ":" +
-                 d.getSeconds();
-        }
-
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.today(s.id, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 1000, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
                 $scope.pHDataset = _.map(records, function (e, key) {
-                  var d = new Date(e.createdAt);
+                  var d = digestDate(e.DATA);
                   return {
                     date: formatDate(d),
-                    value: e.ph
+                    value: digestAvgValue(e.ph)
                   }
                 });
               });
@@ -715,7 +719,7 @@
                 if ($scope.sensor.ext_temp_active) {
 
                   $scope.extTempDataset.labels = _.map(data, function (e, key) {
-                    if (key % 5 == 0) {
+                    if (key % 3 == 0) {
                       return e['DATA'];
                     }
                     return '';
@@ -730,7 +734,7 @@
 
                 if ($scope.sensor.water_temp_active) {
                   $scope.waterTempDataset.labels = _.map(data, function (e, key) {
-                    if (key % 5 == 0) {
+                    if (key % 3 == 0) {
                       return e['DATA'];
                     }
                     return '';return '';
@@ -745,7 +749,7 @@
 
                 if ($scope.sensor.luminosity_active) {
                   $scope.luminosityDataset.labels = _.map(data, function (e, key) {
-                    if (key % 5 == 0) {
+                    if (key % 3 == 0) {
                       return e['DATA'];
                     }
                     return '';
@@ -760,7 +764,7 @@
 
                 if ($scope.sensor.ph_active) {
                   $scope.phDataset.labels = _.map(data, function (e, key) {
-                    if (key % 5 == 0) {
+                    if (key % 3 == 0) {
                       return e['DATA'];
                     }
                     return '';

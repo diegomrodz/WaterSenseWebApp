@@ -8,7 +8,17 @@
 module.exports = {
 
   daily_avg: function (req, res, next) {
-    SensorSignalService.getDailyAverage(req, function (data) {
+    var options = { sensor: req.param('sensor'), limit: req.param('limit') };
+    
+    SensorSignalService.getDailyAverage(options, function (data) {
+      return res.json(data);
+    });
+  },
+  
+  hourly_avg: function (req, res, next) {
+    var options = { sensor: req.param('sensor'), limit: req.param('limit') };
+
+    SensorSignalService.getHourlyAverage(options, function (data) {
       return res.json(data);
     });
   },
