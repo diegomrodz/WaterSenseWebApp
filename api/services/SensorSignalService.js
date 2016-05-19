@@ -3,9 +3,9 @@ module.exports = {
 
   getTodayAverage: function (sensor, callback) {
     var query = "SELECT                                             \
-                  AVG(ext_temp) as ext_temp                         \
+                  AVG(ext_temp) as ext_temp,                        \
                   AVG(water_temp) as water_temp,                    \
-                  AVG(ph) as ph                                     \
+                  AVG(ph) as ph,                                    \
                   AVG(luminosity) as luminosity                     \
                  FROM water_sense.sensorsignal                      \
                   WHERE sensor = " + sensor + " "                   +
@@ -13,7 +13,7 @@ module.exports = {
 
     SensorSignal.query(query, function (err, records) {
       if (err) console.log(err);
-      
+
       callback(records);
     });
   },
