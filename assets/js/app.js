@@ -516,7 +516,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -524,26 +526,11 @@
   WaterSenseApplication.controller('WaterTempSensorInfoCtrl',
     ['$scope', '$routeParams', 'SensorRepository', 'IQA',
       function ($scope, $routeParams, SensorRepository, IQA) {
-        $scope.chartOptions = {
-          height: 270,
-          width: 240,
-          chartPadding: 1,
-          fullWidth: false
-        };
-
-        var rng = _.range(-5, 20, 5);
-
-        $scope.iqaWaterTempDataset = {
-          labels: rng,
-          series: [
-            _.map(rng, function (e) {
-              return IQA.qDT(e);
-            })
-          ]
-        };
-
+       
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -552,7 +539,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -561,7 +550,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -570,7 +561,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -579,7 +572,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -588,7 +583,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });  
         });
       }
     ]);
@@ -597,7 +594,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -606,7 +605,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -615,7 +616,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -624,7 +627,9 @@
     ['$scope', '$routeParams', 'SensorRepository',
       function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
-          $scope.sensor = s;
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
         });
       }
     ]);
@@ -979,7 +984,7 @@
           templateUrl: url_view('/sensor_detail_ph_info'),
           controller: 'PHSensorInfoCtrl'
         })
-        .when('/sensor/:sensorId/dissolvel_o2/info', {
+        .when('/sensor/:sensorId/dissolved_o2/info', {
           templateUrl: url_view('/sensor_detail_dissolved_o2_info'),
           controller: 'DissolvedO2SensorInfoCtrl'
         })
