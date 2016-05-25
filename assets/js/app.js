@@ -19,11 +19,55 @@
   }
 
   function formatDate(date) {
-    return date.getMonth() + "/" + date.getDate() + " " + date.getHours();
+    return date.getDate() + "/" + date.getMonth() + " " + date.getHours() + "h";
   }
 
   function digestAvgValue(valueString) {
     return parseFloat(valueString, 10).toFixed(3);
+  }
+  
+  function formatHour(date) {
+    return date.getUTCHours() + "h";
+  }
+  
+  function formatDateDaily(date) {
+    var d = new Date(date);
+    
+    return d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+  }
+
+  function calcDailyAverage(records) {
+    var s = _.groupBy(records, function (e) {
+      var d = digestDate(e.DATA);
+      
+      return d.getMonth() + "/" + d.getDate();
+    });
+    
+    return _.map(s, function (e, key) {
+      var ext_temp = _.reduce(e, function (a, b) {
+        return a + b.ext_temp;
+      }, 0);
+      
+      var water_temp = _.reduce(e, function (a, b) {
+        return a + b.water_temp;
+      }, 0);
+      
+      var luminosity = _.reduce(e, function (a, b) {
+        return a + b.luminosity;
+      }, 0);
+      
+      var ph = _.reduce(e, function (a, b) {
+        return a + b.ph;
+      }, 0);
+      
+      return {
+        DATA: key,
+        ext_temp: ext_temp / e.length,
+        water_temp: water_temp / e.length,
+        luminosity: luminosity / e.length,
+        ph: ph / e.length
+      };
+    });
   }
 
   WaterSenseApplication.service('IQA', [
@@ -69,6 +113,17 @@
         $.ajax({
           url: url_api('/PeriodicMeasurement'),
           data: _.extend({sensor: sensor}, obj),
+          type: 'post',
+          dataType: 'json'
+        }).done(function (data) {
+          callback(data);
+        });
+      };
+      
+      self.last20 = function (sensor, variable, callback) {
+        $.ajax({
+          url: url_api("/PeriodicMeasurement/find"),
+          data: {'sensor': sensor, 'limit': 20, 'variable': variable},
           type: 'post',
           dataType: 'json'
         }).done(function (data) {
@@ -160,115 +215,55 @@
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
 
-        $scope.extTempDataset = [];
-
-        $scope.dataFromPromise = function () {
-          var deferred = $q.defer();
-
-          var data = $scope.extTempDataset;
-
-          deferred.resolve(data);
-
-          return deferred.promise;
+        $scope.dailyExtTempDataset = {};
+        $scope.weeklyExtTempDataset = {};
+        
+        $scope.chartOptions = {
+          height: 430,
+          chartPadding: 1,
+          fullWidth: false
         };
-
-        $scope.extTempChartOptions = $timeout(function () {
-          return {
-            "type": "serial",
-            "theme": "none",
-            "marginRight": 40,
-            "marginLeft": 40,
-            "autoMarginOffset": 20,
-            "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "MM/DD HHh",
-            "valueAxes": [{
-              "id": "v1",
-              "axisAlpha": 0,
-              "position": "left",
-              "ignoreAxisWidth": true
-            }],
-            "balloon": {
-              "borderThickness": 1,
-              "shadowAlpha": 0
-            },
-            "graphs": [{
-              "id": "g1",
-              "balloon": {
-                "drop": true,
-                "adjustBorderColor": false,
-                "color": "#ffffff"
-              },
-              "bullet": "round",
-              "bulletBorderAlpha": 1,
-              "bulletColor": "#FFFFFF",
-              "bulletSize": 5,
-              "hideBulletsCount": 50,
-              "lineThickness": 2,
-              "title": "red line",
-              "useLineColorForBulletBorder": true,
-              "valueField": "value",
-              "balloonText": "<span style='font-size:14px;'>[[value]]</span>"
-            }],
-            "chartScrollbar": {
-              "graph": "g1",
-              "oppositeAxis": false,
-              "offset": 30,
-              "scrollbarHeight": 40,
-              "backgroundAlpha": 0,
-              "selectedBackgroundAlpha": 0.1,
-              "selectedBackgroundColor": "#888888",
-              "graphFillAlpha": 0,
-              "graphLineAlpha": 0.5,
-              "selectedGraphFillAlpha": 0,
-              "selectedGraphLineAlpha": 1,
-              "autoGridCount": true,
-              "color": "#AAAAAA"
-            },
-            "chartCursor": {
-              "pan": true,
-              "valueLineEnabled": true,
-              "valueLineBalloonEnabled": true,
-              "cursorAlpha": 1,
-              "cursorColor": "#258cbb",
-              "limitToGraph": "g1",
-              "valueLineAlpha": 0.2,
-              "valueZoomable": true
-            },
-            "valueScrollbar": {
-              "oppositeAxis": false,
-              "offset": 50,
-              "scrollbarHeight": 10
-            },
-            "categoryField": "date",
-            "categoryAxis": {
-              "parseDates": false,
-              "dashLength": 1,
-              "minorGridEnabled": true,
-              "autoWrap": true,
-              "labelsEnabled": false
-            },
-            "export": {
-              "enabled": true
-            },
-            "data": $scope.dataFromPromise()
-          };
-        }, 1000);
 
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 2, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
-                $scope.extTempDataset = _.map(records, function (e, key) {
+                $scope.dailyExtTempDataset.labels = _.map(records, function (e, key) {
                   var d = digestDate(e.DATA);
-                  return {
-                    date: formatDate(d),
-                    value: digestAvgValue(e.ext_temp)
-                  }
+                  return formatHour(d);
                 });
+                
+                $scope.dailyExtTempDataset.series = [
+                  
+                  _.map(records, function (e, key) {
+                    return e.ext_temp;  
+                  })
+                  
+                ];
+              });
+            });
+
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7, function (records) {
+              records.reverse();
+
+              $scope.$apply(function () {
+                var avgs = calcDailyAverage(records);
+                
+                $scope.weeklyExtTempDataset.labels = _.map(avgs, function (e, key) {
+                  return e.DATA;
+                });
+                
+                $scope.weeklyExtTempDataset.series = [
+                  
+                  _.map(avgs, function (e, key) {
+                    return e.ext_temp;  
+                  })
+                  
+                ];
               });
 
             });
@@ -283,115 +278,55 @@
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
 
-        $scope.waterTempDataset = [];
-
-        $scope.dataFromPromise = function () {
-          var deferred = $q.defer();
-
-          var data = $scope.waterTempDataset;
-
-          deferred.resolve(data);
-
-          return deferred.promise;
+        $scope.chartOptions = {
+          height: 430,
+          chartPadding: 1,
+          fullWidth: false
         };
 
-        $scope.waterTempChartOptions = $timeout(function () {
-          return {
-            "type": "serial",
-            "theme": "none",
-            "marginRight": 40,
-            "marginLeft": 40,
-            "autoMarginOffset": 20,
-            "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "MM/DD HHh",
-            "valueAxes": [{
-              "id": "v1",
-              "axisAlpha": 0,
-              "position": "left",
-              "ignoreAxisWidth": true
-            }],
-            "balloon": {
-              "borderThickness": 1,
-              "shadowAlpha": 0
-            },
-            "graphs": [{
-              "id": "g1",
-              "balloon": {
-                "drop": true,
-                "adjustBorderColor": false,
-                "color": "#ffffff"
-              },
-              "bullet": "round",
-              "bulletBorderAlpha": 1,
-              "bulletColor": "#FFFFFF",
-              "bulletSize": 5,
-              "hideBulletsCount": 50,
-              "lineThickness": 2,
-              "title": "red line",
-              "useLineColorForBulletBorder": true,
-              "valueField": "value",
-              "balloonText": "<span style='font-size:14px;'>[[value]]</span>"
-            }],
-            "chartScrollbar": {
-              "graph": "g1",
-              "oppositeAxis": false,
-              "offset": 30,
-              "scrollbarHeight": 40,
-              "backgroundAlpha": 0,
-              "selectedBackgroundAlpha": 0.1,
-              "selectedBackgroundColor": "#888888",
-              "graphFillAlpha": 0,
-              "graphLineAlpha": 0.5,
-              "selectedGraphFillAlpha": 0,
-              "selectedGraphLineAlpha": 1,
-              "autoGridCount": true,
-              "color": "#AAAAAA"
-            },
-            "chartCursor": {
-              "pan": true,
-              "valueLineEnabled": true,
-              "valueLineBalloonEnabled": true,
-              "cursorAlpha": 1,
-              "cursorColor": "#258cbb",
-              "limitToGraph": "g1",
-              "valueLineAlpha": 0.2,
-              "valueZoomable": true
-            },
-            "valueScrollbar": {
-              "oppositeAxis": false,
-              "offset": 50,
-              "scrollbarHeight": 10
-            },
-            "categoryField": "date",
-            "categoryAxis": {
-              "parseDates": false,
-              "dashLength": 1,
-              "minorGridEnabled": true,
-              "autoWrap": true,
-              "labelsEnabled" : false
-            },
-            "export": {
-              "enabled": true
-            },
-            "data": $scope.dataFromPromise()
-          };
-        }, 1000);
+        $scope.dailyWaterTempDataset = {};
+        $scope.weeklyWaterTempDataset = {};
 
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 2, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
-                $scope.waterTempDataset = _.map(records, function (e, key) {
+                $scope.dailyWaterTempDataset.labels = _.map(records, function (e, key) {
                   var d = digestDate(e.DATA);
-                  return {
-                    date: formatDate(d),
-                    value: digestAvgValue(e.water_temp)
-                  }
+                  return formatHour(d);
                 });
+                
+                $scope.dailyWaterTempDataset.series = [
+                  
+                  _.map(records, function (e, key) {
+                    return e.water_temp;  
+                  })
+                  
+                ];
+              });
+            });
+
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7, function (records) {
+              records.reverse();
+
+              $scope.$apply(function () {
+                var avgs = calcDailyAverage(records);
+                
+                $scope.weeklyWaterTempDataset.labels = _.map(avgs, function (e, key) {
+                  return e.DATA;
+                });
+                
+                $scope.weeklyWaterTempDataset.series = [
+                  
+                  _.map(avgs, function (e, key) {
+                    return e.water_temp;  
+                  })
+                  
+                ];
               });
 
             });
@@ -404,119 +339,60 @@
     ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'SensorSignalRepository',
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
-
-        $scope.luminosityDataset = [];
-
-        $scope.dataFromPromise = function () {
-          var deferred = $q.defer();
-
-          var data = $scope.luminosityDataset;
-
-          deferred.resolve(data);
-
-          return deferred.promise;
+        
+        $scope.chartOptions = {
+          height: 430,
+          chartPadding: 1,
+          fullWidth: false
         };
 
-        $scope.luminosityChartOptions = $timeout(function () {
-          return {
-            "type": "serial",
-            "theme": "none",
-            "marginRight": 40,
-            "marginLeft": 40,
-            "autoMarginOffset": 20,
-            "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "MM/DD HHh",
-            "valueAxes": [{
-              "id": "v1",
-              "axisAlpha": 0,
-              "position": "left",
-              "ignoreAxisWidth": true
-            }],
-            "balloon": {
-              "borderThickness": 1,
-              "shadowAlpha": 0
-            },
-            "graphs": [{
-              "id": "g1",
-              "balloon": {
-                "drop": true,
-                "adjustBorderColor": false,
-                "color": "#ffffff"
-              },
-              "bullet": "round",
-              "bulletBorderAlpha": 1,
-              "bulletColor": "#FFFFFF",
-              "bulletSize": 5,
-              "hideBulletsCount": 50,
-              "lineThickness": 2,
-              "title": "red line",
-              "useLineColorForBulletBorder": true,
-              "valueField": "value",
-              "balloonText": "<span style='font-size:14px;'>[[value]]</span>"
-            }],
-            "chartScrollbar": {
-              "graph": "g1",
-              "oppositeAxis": false,
-              "offset": 30,
-              "scrollbarHeight": 40,
-              "backgroundAlpha": 0,
-              "selectedBackgroundAlpha": 0.1,
-              "selectedBackgroundColor": "#888888",
-              "graphFillAlpha": 0,
-              "graphLineAlpha": 0.5,
-              "selectedGraphFillAlpha": 0,
-              "selectedGraphLineAlpha": 1,
-              "autoGridCount": true,
-              "color": "#AAAAAA"
-            },
-            "chartCursor": {
-              "pan": true,
-              "valueLineEnabled": true,
-              "valueLineBalloonEnabled": true,
-              "cursorAlpha": 1,
-              "cursorColor": "#258cbb",
-              "limitToGraph": "g1",
-              "valueLineAlpha": 0.2,
-              "valueZoomable": true
-            },
-            "valueScrollbar": {
-              "oppositeAxis": false,
-              "offset": 50,
-              "scrollbarHeight": 10
-            },
-            "categoryField": "date",
-            "categoryAxis": {
-              "parseDates": false,
-              "dashLength": 1,
-              "minorGridEnabled": true,
-              "autoWrap": true,
-              "labelsEnabled": false
-            },
-            "export": {
-              "enabled": true
-            },
-            "data": $scope.dataFromPromise()
-          };
-        }, 1000);
+        $scope.dailyLuminosityDataset = {};
+        $scope.weeklyLuminosityDataset = {};
 
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 2, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
-                $scope.luminosityDataset = _.map(records, function (e, key) {
+                $scope.dailyLuminosityDataset.labels = _.map(records, function (e, key) {
                   var d = digestDate(e.DATA);
-                  return {
-                    date: formatDate(d),
-                    value: digestAvgValue(e.luminosity)
-                  }
+                  return formatHour(d);
                 });
+                
+                $scope.dailyLuminosityDataset.series = [
+                  
+                  _.map(records, function (e, key) {
+                    return e.luminosity;  
+                  })
+                  
+                ];
+              });
+            });
+
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7, function (records) {
+              records.reverse();
+
+              $scope.$apply(function () {
+                var avgs = calcDailyAverage(records);
+                
+                $scope.weeklyLuminosityDataset.labels = _.map(avgs, function (e, key) {
+                  return e.DATA;
+                });
+                
+                $scope.weeklyLuminosityDataset.series = [
+                  
+                  _.map(avgs, function (e, key) {
+                    return e.luminosity;  
+                  })
+                  
+                ];
               });
 
             });
+            
           });
         });
       }
@@ -527,118 +403,60 @@
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
 
-        $scope.pHDataset = [];
-
-        $scope.dataFromPromise = function () {
-          var deferred = $q.defer();
-
-          var data = $scope.pHDataset;
-
-          deferred.resolve(data);
-
-          return deferred.promise;
+        $scope.chartOptions = {
+          height: 430,
+          chartPadding: 1,
+          fullWidth: false
         };
 
-        $scope.pHChartOptions = $timeout(function () {
-          return {
-            "type": "serial",
-            "theme": "none",
-            "marginRight": 40,
-            "marginLeft": 40,
-            "autoMarginOffset": 20,
-            "mouseWheelZoomEnabled": true,
-            "dataDateFormat": "MM/DD HHh",
-            "valueAxes": [{
-              "id": "v1",
-              "axisAlpha": 0,
-              "position": "left",
-              "ignoreAxisWidth": true
-            }],
-            "balloon": {
-              "borderThickness": 1,
-              "shadowAlpha": 0
-            },
-            "graphs": [{
-              "id": "g1",
-              "balloon": {
-                "drop": true,
-                "adjustBorderColor": false,
-                "color": "#ffffff"
-              },
-              "bullet": "round",
-              "bulletBorderAlpha": 1,
-              "bulletColor": "#FFFFFF",
-              "bulletSize": 5,
-              "hideBulletsCount": 50,
-              "lineThickness": 2,
-              "title": "red line",
-              "useLineColorForBulletBorder": true,
-              "valueField": "value",
-              "balloonText": "<span style='font-size:14px;'>[[value]]</span>"
-            }],
-            "chartScrollbar": {
-              "graph": "g1",
-              "oppositeAxis": false,
-              "offset": 30,
-              "scrollbarHeight": 40,
-              "backgroundAlpha": 0,
-              "selectedBackgroundAlpha": 0.1,
-              "selectedBackgroundColor": "#888888",
-              "graphFillAlpha": 0,
-              "graphLineAlpha": 0.5,
-              "selectedGraphFillAlpha": 0,
-              "selectedGraphLineAlpha": 1,
-              "autoGridCount": true,
-              "color": "#AAAAAA"
-            },
-            "chartCursor": {
-              "pan": true,
-              "valueLineEnabled": true,
-              "valueLineBalloonEnabled": true,
-              "cursorAlpha": 1,
-              "cursorColor": "#258cbb",
-              "limitToGraph": "g1",
-              "valueLineAlpha": 0.2,
-              "valueZoomable": true
-            },
-            "valueScrollbar": {
-              "oppositeAxis": false,
-              "offset": 50,
-              "scrollbarHeight": 10
-            },
-            "categoryField": "date",
-            "categoryAxis": {
-              "parseDates": false,
-              "dashLength": 1,
-              "minorGridEnabled": true,
-              "autoWrap": true,
-              "labelFrequency": 3
-            },
-            "export": {
-              "enabled": true
-            },
-            "data": $scope.dataFromPromise()
-          };
-        }, 1000);
+        $scope.dailyPHDataset = {};
+        $scope.weeklyPHDataset = {};
 
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 2, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
-                $scope.pHDataset = _.map(records, function (e, key) {
+                $scope.dailyPHDataset.labels = _.map(records, function (e, key) {
                   var d = digestDate(e.DATA);
-                  return {
-                    date: formatDate(d),
-                    value: digestAvgValue(e.ph)
-                  }
+                  return formatHour(d);
                 });
+                
+                $scope.dailyPHDataset.series = [
+                  
+                  _.map(records, function (e, key) {
+                    return e.ph;  
+                  })
+                  
+                ];
+              });
+            });
+
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7, function (records) {
+              records.reverse();
+
+              $scope.$apply(function () {
+                var avgs = calcDailyAverage(records);
+                
+                $scope.weeklyPHDataset.labels = _.map(avgs, function (e, key) {
+                  return e.DATA;
+                });
+                
+                $scope.weeklyPHDataset.series = [
+                  
+                  _.map(avgs, function (e, key) {
+                    return e.ph;  
+                  })
+                  
+                ];
               });
 
             });
+            
+
           });
         });
       }
@@ -657,11 +475,35 @@
           bag.measurement = $scope.measurement;
 
           PeriodicMeasurementRepository.create($scope.sensor.id, bag, function () {
-            alert("Medição enviada com sucesso!");
-            $location.path('/Sensor/' + $scope.sensor.id);
+            $scope.$apply(function () {
+              alert("Nova medição inserida com sucesso.");
+              $location.path('/sensor/' + $scope.sensor.id);
+            });
           });
         };
 
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('ReportWeekelySensorDetail', 
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
+        });
+      }
+    ]);
+
+  WaterSenseApplication.controller('ReportMonthlySensorDetail', 
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
@@ -788,8 +630,8 @@
     ]);
 
   WaterSenseApplication.controller('DetailSensorCtrl',
-    ['$scope', '$routeParams', 'SensorRepository', 'SensorSignalRepository', 'NgMap',
-      function ($scope, $routeParams, SensorRepository, SensorSignalRepository, NgMap) {
+    ['$scope', '$routeParams', 'SensorRepository', 'SensorSignalRepository', 'PeriodicMeasurementRepository', 'NgMap',
+      function ($scope, $routeParams, SensorRepository, SensorSignalRepository, PeriodicMeasurementRepository, NgMap) {
         $scope.sensor = {};
 
         $scope.chartOptions = {
@@ -801,7 +643,15 @@
         $scope.waterTempDataset = {};
         $scope.luminosityDataset = {};
         $scope.phDataset = {};
-
+        $scope.dissolvedO2Dataset = {};
+        $scope.fecalMatterDataset = {};
+        $scope.dboDataset = {};
+        $scope.fecalMatterDataset = {};
+        $scope.nitrogenTotalDataset = {};
+        $scope.phosphorusTotalDataset = {};
+        $scope.turbidityDataset = {};
+        $scope.totalSolidsDataset = {};
+        
         $scope.mapLat = 0;
         $scope.mapLng = 0;
 
@@ -820,7 +670,6 @@
 
             SensorSignalRepository.daily_avg($routeParams.sensorId, 20, function (data) {
               $scope.$apply(function () {
-
                 data.reverse();
 
                 if ($scope.sensor.ext_temp_active) {
@@ -844,7 +693,7 @@
                     if (key % 3 == 0) {
                       return e['DATA'];
                     }
-                    return '';return '';
+                    return '';
                   });
 
                   $scope.waterTempDataset.series = [
@@ -886,6 +735,182 @@
 
               });
             });
+
+            if ($scope.sensor.dissolved_o2_active) {
+            
+              PeriodicMeasurementRepository.last20($routeParams.sensorId, "dissolved_o2", function (data) {
+                $scope.$apply(function () {
+                  data.reverse();
+                  
+                  $scope.dissolvedO2Dataset.labels = _.map(data, function (e, key) {
+                    if (data.length <= 6) return formatDateDaily(e.createdAt);
+                    if (key % 3 == 0) {
+                      return formatDateDaily(e.createdAt);
+                    }
+                    return '';
+                  });
+                  
+                  $scope.dissolvedO2Dataset.series = [
+                    _.map(data, function (e) {
+                      return e.measurement;
+                    })
+                  ];
+                  
+                });
+              });
+                          
+            }
+            
+            if ($scope.sensor.fecal_matter_active) {
+            
+              PeriodicMeasurementRepository.last20($routeParams.sensorId, "fecal_matter", function (data) {
+                $scope.$apply(function () {
+                  data.reverse();
+                  
+                  $scope.fecalMatterDataset.labels = _.map(data, function (e, key) {
+                    if (data.length <= 6) return formatDateDaily(e.createdAt);
+                    if (key % 3 == 0) {
+                      return formatDateDaily(e.createdAt);
+                    }
+                    return '';
+                  });
+                  
+                  $scope.fecalMatterDataset.series = [
+                    _.map(data, function (e) {
+                      return e.measurement;
+                    })
+                  ];
+                  
+                });
+              });
+                          
+            }
+            
+            if ($scope.sensor.dbo_active) {
+            
+              PeriodicMeasurementRepository.last20($routeParams.sensorId, "dbo", function (data) {
+                $scope.$apply(function () {
+                  data.reverse();
+                  
+                  $scope.dboDataset.labels = _.map(data, function (e, key) {
+                    if (data.length <= 6) return formatDateDaily(e.createdAt);
+                    if (key % 3 == 0) {
+                      return formatDateDaily(e.createdAt);
+                    }
+                    return '';
+                  });
+                  
+                  $scope.dboDataset.series = [
+                    _.map(data, function (e) {
+                      return e.measurement;
+                    })
+                  ];
+                  
+                });
+              });
+                          
+            }
+            
+            if ($scope.sensor.total_nitrogen_active) {
+            
+              PeriodicMeasurementRepository.last20($routeParams.sensorId, "total_nitrogen", function (data) {
+                $scope.$apply(function () {
+                  data.reverse();
+                  
+                  $scope.nitrogenTotalDataset.labels = _.map(data, function (e, key) {
+                    if (data.length <= 6) return formatDateDaily(e.createdAt);
+                    if (key % 3 == 0) {
+                      return formatDateDaily(e.createdAt);
+                    }
+                    return '';
+                  });
+                  
+                  $scope.nitrogenTotalDataset.series = [
+                    _.map(data, function (e) {
+                      return e.measurement;
+                    })
+                  ];
+                  
+                });
+              });
+            
+            }
+            
+            if ($scope.sensor.phosphorus_total_active) {
+            
+              PeriodicMeasurementRepository.last20($routeParams.sensorId, "total_phosphorus", function (data) {
+                $scope.$apply(function () {
+                  data.reverse();
+                  
+                  $scope.phosphorusTotalDataset.labels = _.map(data, function (e, key) {
+                    if (data.length <= 6) return formatDateDaily(e.createdAt);
+                    if (key % 3 == 0) {
+                      return formatDateDaily(e.createdAt);
+                    }
+                    return '';
+                  });
+                  
+                  $scope.phosphorusTotalDataset.series = [
+                    _.map(data, function (e) {
+                      return e.measurement;
+                    })
+                  ];
+                  
+                });
+              });
+            
+            }
+            
+            if ($scope.sensor.turbidity_active) {
+            
+              PeriodicMeasurementRepository.last20($routeParams.sensorId, "turbidity", function (data) {
+                $scope.$apply(function () {
+                  data.reverse();
+                  
+                  $scope.turbidityDataset.labels = _.map(data, function (e, key) {
+                    if (data.length <= 6) return formatDateDaily(e.createdAt);
+                    if (key % 3 == 0) {
+                      return formatDateDaily(e.createdAt);
+                    }
+                    return '';
+                  });
+                  
+                  $scope.turbidityDataset.series = [
+                    _.map(data, function (e) {
+                      return e.measurement;
+                    })
+                  ];
+                  
+                });
+              });
+            
+            }
+            
+            if ($scope.sensor.total_solids_active) {
+            
+              PeriodicMeasurementRepository.last20($routeParams.sensorId, "total_solids", function (data) {
+                $scope.$apply(function () {
+                  data.reverse();
+                  
+                  $scope.totalSolidsDataset.labels = _.map(data, function (e, key) {
+                    if (data.length <= 6) return formatDateDaily(e.createdAt);
+                    if (key % 3 == 0) {
+                      return formatDateDaily(e.createdAt);
+                    }
+                    return '';
+                  });
+                  
+                  $scope.totalSolidsDataset.series = [
+                    _.map(data, function (e) {
+                      return e.measurement;
+                    })
+                  ];
+                  
+                });
+              });
+            
+            }
+
 
           });
         });
@@ -929,6 +954,15 @@
           controller: 'PHSensorControlCtrl'
         })
 
+        .when('/sensor/:sensorId/report/weekely', {
+          templateUrl: url_view('/sensor_report_weekly'),
+          controller: 'ReportWeekelySensorDetail'
+        })
+        .when('/sensor/:sensorId/report/monthly', {
+          templateUrl: url_view('/sensor_report_monthly'),
+          controller: 'ReportWeekelySensorDetail'
+        })
+        
         .when('/sensor/:sensorId/ext_temp/info', {
           templateUrl: url_view('/sensor_detail_ext_temp_info'),
           controller: 'ExtTempSensorInfoCtrl'

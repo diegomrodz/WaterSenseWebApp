@@ -69,7 +69,7 @@ module.exports = {
       defaultsTo: false
     },
 
-    phosphorus_total_acive: {
+    phosphorus_total_active: {
       type: 'boolean',
       defaultsTo: false
     },

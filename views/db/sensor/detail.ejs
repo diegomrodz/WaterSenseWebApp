@@ -71,6 +71,107 @@
 
       <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="phDataset" chartist-chart-type="Line"></chartist>
     </div>
+    
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.dissolved_o2_active">
+      <h4>Oxigênio Dissolvido
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/dissolved_o2/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/dissolved_o2/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
+
+      <p>Medição periódica do Oxigênio Dissolvido</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="dissolvedO2Dataset" chartist-chart-type="Line"></chartist>
+    </div>
+    
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.fecal_matter_active">
+      <h4>Coliformes Fecais ou Termotolerantes
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/fecal_matter/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=fecal_matter"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/fecal_matter/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
+
+      <p>Medição periódica dos Coliformes Fecais</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="fecalMatterDataset" chartist-chart-type="Line"></chartist>
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.dbo_active">
+      <h4>Demanda Bioquímica de Oxigênio (DBO5,20)
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/dbo/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dbo"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/dbo/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
+
+      <p>Medição periódica da Demanda Bioquímica de Oxigênio segundo o padrão DBO5,20</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="dboDataset" chartist-chart-type="Line"></chartist>
+    </div>
+    
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.total_nitrogen_active">
+      <h4>Nitrogênio Total
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/total_nitrogen/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/total_nitrogen/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
+
+      <p>Medição periódica do Nitrogênio Total</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="nitrogenTotalDataset" chartist-chart-type="Line"></chartist>
+    </div>
+    
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.phosphorus_total_active">
+      <h4>Fósforo Total
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/total_phosphorus/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=total_phosphorus"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/total_phosphorus/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
+
+      <p>Medição periódica do Fósforo Total</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="phosphorusTotalDataset" chartist-chart-type="Line"></chartist>
+    </div>
+    
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.turbidity_active">
+      <h4>Turbídez
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/turbidity/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=turbidity"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/turbidity/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
+
+      <p>Medição periódica da Turbídez</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="turbidityDataset" chartist-chart-type="Line"></chartist>
+    </div>
+    
+    <div class="col-sm-12 col-md-12 col-xs-12 invoice" style="margin-bottom: 20px;" ng-if="sensor.total_solids_active">
+      <h4>Sólidos Totais ou Suspensos
+        <div style="float:right;">
+          <a href="#/sensor/{{sensor.id}}/total_solids/info"><i class="fa fa-info-circle"></i></a>
+          <a href="http://localhost:1337/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download"></i></a>
+          <a href="#/sensor/{{sensor.id}}/total_solids/control" title="Monitorar Variável"><i class="fa fa-binoculars"></i></a>
+        </div>
+      </h4>
+
+      <p>Medição periódica dos Sólidos Totais</p>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="totalSolidDataset" chartist-chart-type="Line"></chartist>
+    </div>
+    
+    
+        
 
   </div>
 

@@ -31,7 +31,7 @@ module.exports = {
         return callback({
           code: 1,
           value: avgs[0]["ph"],
-          message: "O pH esta adequado segundo os padroes do Ministerio da Saude"
+          message: "O pH está adequado segundo os padrões do Ministério da Saúde"
         });
       }
 

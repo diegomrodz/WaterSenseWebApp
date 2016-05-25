@@ -46,7 +46,7 @@ module.exports = {
                 FROM water_sense.sensorsignal "                         +
       "WHERE sensor = " + options.sensor + " "                          +
       "GROUP BY `DATA` "                                                +
-      "ORDER BY `DATA` DESC "                                           +
+      "ORDER BY createdAt DESC "                                        +
       "LIMIT 0, " + (options.limit || 1) + ";";
 
     SensorSignal.query(query, function (err, records) {

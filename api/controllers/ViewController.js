@@ -34,6 +34,18 @@ module.exports = {
   sensor_detail_ph_control: function (req, res) {
     res.view('db/sensor/control/ph', { layout: null });
   },
+  
+  sensor_report_weekly: function (req, res) {
+    res.view('db/sensor/report/weekly', { layout: null });
+  },
+
+  sensor_report_monthly: function (req, res) {
+    res.view('db/sensor/report/monthly', { layout: null });
+  },
+
+  sensor_report_iqa: function (req, res) {
+    res.view('db/sensor/report/iqa', { layout: null });
+  },
 
   sensor_detail_ext_temp_info: function (req, res) {
     res.view('db/sensor/info/ext_temp', { layout: null });

@@ -5,6 +5,22 @@
 
 <div class="h-10"></div>
 
-<div style="width: 100%; height: 420px; padding-top: 45px;" class="col-sm-12 col-xs-12 col-md-12 invoice">
-  <am-chart options="pHChartOptions" height="100%" width="100%"></am-chart>
+<div style="width: 100%; height: 487px; padding-top: 15px; margin-bottom: 20px;" class="col-sm-12 col-xs-12 col-md-12 invoice">
+  <h5>Gráfico Diário</h5>
+
+  <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="dailyPHDataset" chartist-chart-type="Line"></chartist>    
+</div>
+
+<div style="width: 100%; height: 487px; padding-top: 15px; margin-bottom: 20px;" class="col-sm-12 col-xs-12 col-md-12 invoice">
+  <h5>Gráfico Semanal</h5>
+
+  <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="weeklyPHDataset" chartist-chart-type="Line"></chartist>    
+</div>
+
+<div class="col-xs-12 col-sm-12 col-md-12 invoice">
+  <h5>Controle</h5>
+
+  <p>
+    Explicar como o controle desta variável é feito.
+  </p>
 </div>

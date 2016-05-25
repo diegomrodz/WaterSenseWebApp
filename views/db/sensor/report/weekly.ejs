@@ -1,0 +1,85 @@
+<div class="row" style="margin-top: 20px;">
+  <h3 style="text-transform: uppercase;">Relatório Semanal
+    <span class="pull-right">18/05 - 25/05</span>    
+  </h3>
+
+  <p>{{ sensor.nickname }}</p>
+
+</div>
+
+<div class="row" style="margin-bottom:20px;">
+  <h3>Índices</h3>
+    
+    <div class="col-sm-12 col-md-12 col-xl-6 invoice"  ng-if="sensor.ext_temp_active">
+      <h4>Temperatura Externa</h4>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+    
+    <div class="col-sm-12 col-md-12 col-xl-6 invoice"  ng-if="sensor.ext_temp_active">
+      <h4>Temperatura da Água</h4>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xl-6 invoice"  ng-if="sensor.luminosity_active">
+      <h4>Luminosidade</h4>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xl-6 invoice"  ng-if="sensor.ph_active">
+      <h4>pH</h4>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+
+</div>
+
+<div class="row" style="margin-bottom:20px;" ng-if="sensor.ph_active && sensor.water_temp_active">
+  <h3>Temperatura Água x pH</h3>
+
+    <div class="col-sm-12 col-md-12 col-xl-12 invoice" >
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+
+</div>
+
+<div class="row" style="margin-bottom:20px;">
+  <h3>Histórico</h3>
+    
+    <div class="col-sm-12 col-md-12 col-xl-6 invoice"  ng-if="sensor.ext_temp_active">
+      <h4>Temperatura Externa</h4>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+    
+    <div class="col-sm-12 col-md-12 col-xl-6 invoice"  ng-if="sensor.ext_temp_active">
+      <h4>Temperatura da Água</h4>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xl-6 invoice"  ng-if="sensor.luminosity_active">
+      <h4>Luminosidade</h4>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+
+    <div class="col-sm-12 col-md-12 col-xl-6 invoice"  ng-if="sensor.ph_active">
+      <h4>pH</h4>
+
+      <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="extTempDataset" chartist-chart-type="Line"></chartist>
+
+    </div>
+
+</div>
