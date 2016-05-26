@@ -54,13 +54,37 @@ module.exports = {
           function (err, results) {
             return callback(null, results);
           }
-        )
+        );
       },
       
       function (sensors, callback) {
-        
-        
-        
+        async.parallel(
+          _.map(sensors, function (sensor) {
+            return function (callback2) {
+              NotificationService.createPHNotifications(sensor, function (notifications) {
+                callback2(null, notifications);
+              });  
+            };
+          }),
+          function (err, notifications) {
+            return callback(null, _.flatten(notifications));
+          }
+        );
+      },
+      
+      function (notifications, callback) {
+        async.parallel(
+          _.map(notifications, function (notification) {
+            return function (callback2) {
+              NotificationService.sendPHNotification(notification, function (result) {
+                return callback2(null, result);
+              });
+            };
+          }),
+          function (err, result) {
+            return callback(null, result);
+          }
+        );
       }
        
    ], function (err, result) {

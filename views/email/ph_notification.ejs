@@ -1,0 +1,119 @@
+<style>
+    table, th, td {
+        border: 1px solid black;
+    }
+    
+    th, td {
+        text-align: center;
+    }
+</style>
+
+<h1>Water Sense</h1>
+<h2><%= sensor_name %></h2>
+
+<h3>Notificação criada em <%= formatDate(new Date()) %> às <%= formatHour(new Date()) %></h3>
+
+<% if (upper.length > 0) { %>
+
+    <h4>Limite Superior</h4>
+
+    <p>
+        Houveram <%= upper.length %> medições que ultrapassaram o limite superior do parâmetro pH.
+    </p>
+
+    <br>
+
+    <table style="width:100%;">
+        <caption>Medições</caption>
+        <thead style="border-bottom: 3px solid black;">
+            <tr>
+                <th>Código</th>
+                <th>Parâmetro</th>
+                <th>Valor</th>
+                <th>Momento</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <% for (var i = 0; i < upper.length; i += 1) { %>
+                <tr>
+                    <td><%= upper[i].code %></td>
+                    <td>pH</td>
+                    <td><%= upper[i].value %></td>
+                    <td><%= formatHour(new Date(upper[i].time)) %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+<% } %>
+
+<% if (lower.length > 0) { %>
+
+    <h4>Limite Inferior</h4>
+
+    <p>
+        Houveram <%= lower.length %> medições que ultrapassaram o limite inferior do parâmetro pH.
+    </p>
+
+    <br>
+
+    <table style="width:100%;">
+        <caption>Medições</caption>
+        <thead style="border-bottom: 3px solid black;">
+            <tr>
+                <th>Código</th>
+                <th>Parâmetro</th>
+                <th>Valor</th>
+                <th>Momento</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <% for (var i = 0; i < lower.length; i += 1) { %>
+                <tr>
+                    <td><%= lower[i].code %></td>
+                    <td>pH</td>
+                    <td><%= lower[i].value %></td>
+                    <td><%= formatHour(new Date(lower[i].time)) %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+<% } %>
+
+<% if (abnormal.length > 0) { %>
+
+    <h4>Medições Anormais</h4>
+
+    <p>
+        Houveram <%= abnormal.length %> medições anormais, o que pode indicar um mal funcionamento do dispositivo.
+    </p>
+
+    <br>
+
+    <table style="width:100%;">
+        <caption>Medições</caption>
+        <thead style="border-bottom: 3px solid black;">
+            <tr>
+                <th>Código</th>
+                <th>Parâmetro</th>
+                <th>Valor</th>
+                <th>Momento</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            <% for (var i = 0; i < abnormal.length; i += 1) { %>
+                <tr>
+                    <td><%= abnormal[i].code %></td>
+                    <td>pH</td>
+                    <td><%= abnormal[i].value %></td>
+                    <td><%= formatHour(new Date(abnormal[i].time)) %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+<% } %>
