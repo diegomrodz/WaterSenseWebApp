@@ -30,7 +30,8 @@ module.exports = {
   },
 
   getDailyAverage: function (options, callback) {
-    var query = "SELECT DATE_FORMAT(createdAt,'%d/%m/%Y') AS `DATA`,\
+    var query = "SELECT                                             \
+                  DATE_FORMAT(createdAt,'%d/%m/%Y') AS `DATA`,      \
                   AVG(ext_temp) AS `ext_temp`,                      \
                   AVG(water_temp) AS `water_temp`,                  \
                   AVG(luminosity) AS `luminosity`,                  \
@@ -38,7 +39,7 @@ module.exports = {
                 FROM water_sense.sensorsignal "                     +
                 "WHERE sensor = " + options.sensor + " "            +
                 "GROUP BY `DATA` "                                  +
-                "ORDER BY `DATA` DESC "                             +
+                "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y') DESC "    +
                 "LIMIT 0, " + (options.limit || 1) + ";";
 
     SensorSignal.query(query, function (err, records) {
@@ -57,7 +58,7 @@ module.exports = {
                 FROM water_sense.sensorsignal "                         +
       "WHERE sensor = " + options.sensor + " "                          +
       "GROUP BY `DATA` "                                                +
-      "ORDER BY createdAt DESC "                                        +
+      "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y %h') DESC "               +
       "LIMIT 0, " + (options.limit || 1) + ";";
 
     SensorSignal.query(query, function (err, records) {
@@ -76,7 +77,7 @@ module.exports = {
                 FROM water_sense.sensorsignal "                             +
       "WHERE sensor = " + options.sensor + " "                              +
       "GROUP BY `DATA` "                                                    +
-      "ORDER BY `DATA` DESC "                                               +
+      "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y %h:%i') DESC "                +
       "LIMIT 0, " + (options.limit || 1) + ";";
 
     SensorSignal.query(query, function (err, records) {

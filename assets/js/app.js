@@ -202,6 +202,12 @@
       function ($scope, SensorRepository) {
         $scope.sensorList = [];
 
+        $scope.formatDescription = function (text) {
+          if (text.length <= 123) return text;
+          
+          return text.slice(0, 120) + "...";
+        };
+
         SensorRepository.all(function (data) {
           $scope.$apply(function () {
             $scope.sensorList = data;
