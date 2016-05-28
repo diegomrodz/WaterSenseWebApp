@@ -1,0 +1,24 @@
+<div class="row" style="margin-top: 20px;">
+  <h3 style="text-transform: uppercase;">{{ sensor.nickname }}</h3>
+  <h4>Inscrever-se neste sensor</h4>
+</div>
+
+<div class="h-10"></div>
+
+<div class="col-sm-12 col-md-12 col-lg-6 col-lg-offset-3 invoice">
+  <fieldset>
+    <legend>Informações</legend>
+  
+    <fieldset class="form-group m-b-20">
+      <input ng-model="p_name" type="text" class="form-control" placeholder="Nome">
+    </fieldset>
+
+    <fieldset class="form-group m-b-20">
+      <input ng-model="p_email" type="text" class="form-control" placeholder="Email">
+    </fieldset>
+
+  </fieldset>
+
+  <button ng-click="subscribeToSensor()" type="button" class="btn btn-success m-r-10 m-b-10 pull-right">Enviar</button>
+
+</div>

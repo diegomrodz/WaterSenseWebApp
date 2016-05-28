@@ -47,6 +47,10 @@ module.exports = {
     res.view('db/sensor/report/iqa', { layout: null });
   },
 
+  sensor_subscriber_new: function (req, res) {
+    res.view('db/sensor/subscriber/new', { layout: null });
+  },
+
   sensor_detail_ext_temp_info: function (req, res) {
     res.view('db/sensor/info/ext_temp', { layout: null });
   },

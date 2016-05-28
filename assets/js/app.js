@@ -15,7 +15,7 @@
     var year = dateString.slice(6, 10);
     var hour = dateString.slice(11, 14);
 
-    return new Date(year, month, day, hour);
+    return new Date(parseInt(year), parseInt(month), parseInt(day), parseInt(hour), 0, 0);
   }
 
   function formatDate(date) {
@@ -27,7 +27,7 @@
   }
   
   function formatHour(date) {
-    return date.getUTCHours() + "h";
+    return date.getDate() + " " + date.getUTCHours() + "h";
   }
   
   function formatDateDaily(date) {
@@ -74,16 +74,25 @@
     function () {
       var self = this;
 
-      var W_DT_A = 0.0003869;
-      var W_DT_B = 0.1815;
-      var W_DT_C = 0.01081;
-
-      self.qDT = function (dt) {
-        if (dt < -5) return undefined;
-        if (dt > 15) return 9.0;
-
-        return 1 / (W_DT_A * Math.pow(dt + W_DT_B, 2) + W_DT_C);
-      }
+      self.cetesbIndex = function (iqa) {
+        if (iqa <= 19) {
+          return "PÉSSIMA";
+        }
+        
+        if (iqa <= 36) {
+          return "RUIM";
+        }
+        
+        if (iqa <= 50) {
+          return "ACEITÁVEL";
+        }
+        
+        if (iqa <= 79) {
+          return "BOA";
+        }
+        
+        return "ÓTIMA";
+      };
     }
   ]);
 
@@ -132,7 +141,40 @@
       };
     }
   ]);
-
+  
+  WaterSenseApplication.service('IQARepository', [
+    function () {
+      var self = this;
+      
+      self.daily = function (sensor, limit, callback) {
+        $.ajax({
+          url: url_api("/IQA/daily"),
+          data: {'sensor': sensor, 'limit': limit },
+          type: 'get',
+          dataType: 'json'
+        }).done(function (data) {
+          callback(data);
+        });
+      };
+    }
+  ]);
+  
+  WaterSenseApplication.service('SubscriberRepository', [
+    function () {
+      var self = this;
+      
+      self.create = function (sensor, subscriber, callback) {
+        $.ajax({
+          url: url_api("/EmailSubscription"),
+          data: _.extend({ sensor: sensor }, subscriber),
+          method: 'post',
+          dataType: 'json'
+        }).done(function (data) {
+          callback(data);
+        });
+      };
+    }
+  ]);
 
   WaterSenseApplication.service('SensorSignalRepository', [
     function () {
@@ -495,6 +537,30 @@
         });
       }
     ]);
+  
+  WaterSenseApplication.controller('SubscriberNewSensorCtrl', 
+    ['$scope', '$routeParams', 'SensorRepository', 'SubscriberRepository',
+      function ($scope, $routeParams, SensorRepository, SubscriberRepository) {
+        
+        $scope.subscribeToSensor = function () {
+          var bag = {};
+          
+          bag.email = $scope.p_email;
+          bag.name = $scope.p_name;
+          
+          SubscriberRepository.create($routeParams.sensorId, bag, function (res) {
+            alert("Você receberá as notificações deste sensor!");
+            $location.path('/sensor/' + $routeParams.sensorId);
+          });
+        };
+        
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.$apply(function () {
+            $scope.sensor = s;
+          });
+        });
+      }
+    ]);
 
   WaterSenseApplication.controller('ReportWeekelySensorDetail', 
     ['$scope', '$routeParams', 'SensorRepository',
@@ -641,8 +707,8 @@
     ]);
 
   WaterSenseApplication.controller('DetailSensorCtrl',
-    ['$scope', '$routeParams', 'SensorRepository', 'SensorSignalRepository', 'PeriodicMeasurementRepository', 'NgMap',
-      function ($scope, $routeParams, SensorRepository, SensorSignalRepository, PeriodicMeasurementRepository, NgMap) {
+    ['$scope', '$routeParams', 'SensorRepository', 'SensorSignalRepository', 'PeriodicMeasurementRepository', 'IQARepository', 'IQA', 'NgMap',
+      function ($scope, $routeParams, SensorRepository, SensorSignalRepository, PeriodicMeasurementRepository, IQARepository, IQA, NgMap) {
         $scope.sensor = {};
 
         $scope.chartOptions = {
@@ -671,7 +737,13 @@
 
           return d.getDay() + "/" + d.getMonth() + "/" + d.getFullYear();
         };
-
+        
+        $scope.formatValue = function (value) {
+          return value ? value.toFixed(3) : "";
+        };
+        
+        $scope.getCetesbIndex = IQA.cetesbIndex;
+        
         SensorRepository.find($routeParams.sensorId, function (data) {
           $scope.$apply(function () {
             $scope.sensor = data;
@@ -682,6 +754,8 @@
             SensorSignalRepository.daily_avg($routeParams.sensorId, 20, function (data) {
               $scope.$apply(function () {
                 data.reverse();
+
+                $scope.daily_avg = _.last(data);
 
                 if ($scope.sensor.ext_temp_active) {
 
@@ -921,7 +995,14 @@
               });
             
             }
-
+            
+            IQARepository.daily($routeParams.sensorId, 1, function (data) {
+              $scope.$apply(function () {
+                $scope.iqa_last = data[0];
+                
+                console.log(data);
+              });
+            });
 
           });
         });
@@ -963,6 +1044,11 @@
         .when('/sensor/:sensorId/ph/control', {
           templateUrl: url_view('/sensor_detail_ph_control'),
           controller: 'PHSensorControlCtrl'
+        })
+        
+        .when('/sensor/:sensorId/subscriber/new', {
+          templateUrl: url_view('/sensor_subscriber_new'),
+          controller: 'SubscriberNewSensorCtrl'
         })
 
         .when('/sensor/:sensorId/report/weekely', {
