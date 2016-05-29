@@ -8,12 +8,6 @@ var async = require('async');
 
 module.exports = {
 
-  test: function (req, res) {
-    DataAnalyzerService.dailyPHAvaliation(1, function (obj) {
-      res.json(obj);
-    });
-  },
-
   analyzePh: function (req, res) {
    async.waterfall([
       
