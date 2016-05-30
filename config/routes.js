@@ -35,7 +35,8 @@ module.exports.routes = {
   '/': {
     view: 'homepage',
     locals: {
-      app_url: process.env.NODE_ENV == 'development' ? 'http://localhost:1337' : 'http://water-sense.herokuapp.com'
+      //app_url: 'http://water-sense.herokuapp.com',
+      app_url: 'http://localhost:1337'
     }
   }
 

@@ -227,8 +227,8 @@
 
       self.today = function (sensor, callback) {
         $.ajax({
-          url: url_api("/SensorSignal/interval"),
-          data: {'sensor': sensor, 'period': 'today'},
+          url: url_api("/SensorSignal/today"),
+          data: {'sensor': sensor},
           type: 'get',
           dataType: 'json'
         }).done(function (data) {
@@ -269,7 +269,7 @@
         
         $scope.chartOptions = {
           height: 430,
-          chartPadding: 1,
+          chartPadding: 30,
           fullWidth: false
         };
 
@@ -278,17 +278,17 @@
             $scope.sensor = s;
 
             SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
-              records.reverse();
+              var res = _.sortBy(records, function (record) { return digestDate(record.DATA) });
 
               $scope.$apply(function () {
-                $scope.dailyExtTempDataset.labels = _.map(records, function (e, key) {
+                $scope.dailyExtTempDataset.labels = _.map(res, function (e, key) {
                   var d = digestDate(e.DATA);
                   return formatHour(d);
                 });
                 
                 $scope.dailyExtTempDataset.series = [
                   
-                  _.map(records, function (e, key) {
+                  _.map(res, function (e, key) {
                     return e.ext_temp;  
                   })
                   
@@ -296,7 +296,7 @@
               });
             });
 
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 30, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -329,7 +329,7 @@
 
         $scope.chartOptions = {
           height: 430,
-          chartPadding: 1,
+          chartPadding: 20,
           fullWidth: false
         };
 
@@ -341,17 +341,17 @@
             $scope.sensor = s;
 
             SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
-              records.reverse();
+              var res = _.sortBy(records, function (record) { return digestDate(record.DATA) });
 
               $scope.$apply(function () {
-                $scope.dailyWaterTempDataset.labels = _.map(records, function (e, key) {
+                $scope.dailyWaterTempDataset.labels = _.map(res, function (e, key) {
                   var d = digestDate(e.DATA);
                   return formatHour(d);
                 });
                 
                 $scope.dailyWaterTempDataset.series = [
                   
-                  _.map(records, function (e, key) {
+                  _.map(res, function (e, key) {
                     return e.water_temp;  
                   })
                   
@@ -359,7 +359,7 @@
               });
             });
 
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 30, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -391,7 +391,7 @@
         
         $scope.chartOptions = {
           height: 430,
-          chartPadding: 1,
+          chartPadding: 20,
           fullWidth: false
         };
 
@@ -403,17 +403,17 @@
             $scope.sensor = s;
 
             SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
-              records.reverse();
+              var res = _.sortBy(records, function (record) { return digestDate(record.DATA) });
 
               $scope.$apply(function () {
-                $scope.dailyLuminosityDataset.labels = _.map(records, function (e, key) {
+                $scope.dailyLuminosityDataset.labels = _.map(res, function (e, key) {
                   var d = digestDate(e.DATA);
                   return formatHour(d);
                 });
                 
                 $scope.dailyLuminosityDataset.series = [
                   
-                  _.map(records, function (e, key) {
+                  _.map(res, function (e, key) {
                     return e.luminosity;  
                   })
                   
@@ -421,7 +421,7 @@
               });
             });
 
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 30, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -454,7 +454,7 @@
 
         $scope.chartOptions = {
           height: 430,
-          chartPadding: 1,
+          chartPadding: 20,
           fullWidth: false
         };
 
@@ -466,17 +466,17 @@
             $scope.sensor = s;
 
             SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
-              records.reverse();
+              var res = _.sortBy(records, function (record) { return digestDate(record.DATA) });
 
               $scope.$apply(function () {
-                $scope.dailyPHDataset.labels = _.map(records, function (e, key) {
+                $scope.dailyPHDataset.labels = _.map(res, function (e, key) {
                   var d = digestDate(e.DATA);
                   return formatHour(d);
                 });
                 
                 $scope.dailyPHDataset.series = [
                   
-                  _.map(records, function (e, key) {
+                  _.map(res, function (e, key) {
                     return e.ph;  
                   })
                   
@@ -484,7 +484,7 @@
               });
             });
 
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 30, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -506,6 +506,17 @@
             });
             
 
+          });
+        });
+      }
+    ]);
+  
+  WaterSenseApplication.controller('IQASensorControlCtrl', 
+    ['$scope', '$routeParams', 'SensorRepository',
+      function ($scope, $routeParams, SensorRepository) {
+        SensorRepository.find($routeParams.sensorId, function (s) {
+          $scope.$apply(function () {
+            $scope.sensor = s;
           });
         });
       }
@@ -714,7 +725,7 @@
 
         $scope.chartOptions = {
           height: 270,
-          chartPadding: 1
+          chartPadding: 15
         };
 
         $scope.extTempDataset = {};
@@ -1045,6 +1056,11 @@
         .when('/sensor/:sensorId/ph/control', {
           templateUrl: url_view('/sensor_detail_ph_control'),
           controller: 'PHSensorControlCtrl'
+        })
+        
+        .when('/sensor/:sensorId/iqa/control', {
+          templateUrl: url_view('/sensor_detail_iqa_control'),
+          controller: 'IQASensorControlCtrl'
         })
         
         .when('/sensor/:sensorId/subscriber/new', {

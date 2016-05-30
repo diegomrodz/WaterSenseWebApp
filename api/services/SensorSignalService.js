@@ -2,8 +2,9 @@
 module.exports = {
 
   getTodayMeasurements: function (sensor, callback) {
-    var query = "SELECT * FROM water_sense.sensorsignal " +                 
-                "WHERE sensor = " + sensor + " AND DATE(createdAt) = CURDATE();";
+    var query = "SELECT * FROM sensorsignal " +                 
+                "WHERE sensor = " + sensor + " AND DATE(createdAt) = CURDATE() \
+                ORDER BY id;";
                 
     SensorSignal.query(query, function (err, records) {
       if (err) console.log(err);
@@ -18,7 +19,7 @@ module.exports = {
                   AVG(water_temp) as water_temp,                    \
                   AVG(ph) as ph,                                    \
                   AVG(luminosity) as luminosity                     \
-                 FROM water_sense.sensorsignal                      \
+                 FROM sensorsignal                      \
                   WHERE sensor = " + sensor + " "                   +
                   "AND DATE(createdAt) = CURDATE();";
 

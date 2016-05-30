@@ -7,6 +7,12 @@
 
 module.exports = {
 
+  today: function (req, res, next) {
+    SensorSignalService.getTodayMeasurements(req.param('sensor'), function (data) {
+      res.json(data);
+    });
+  },
+
   daily_avg: function (req, res, next) {
     var options = { sensor: req.param('sensor'), limit: req.param('limit') };
     
