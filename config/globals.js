@@ -10,6 +10,10 @@
  */
 module.exports.globals = {
 
+  APP_URL: function () {
+    return sails.config.enviroment == 'production' ? 'http://water-sense.herokuapp.com' : 'http://localhost:1337';
+  }
+
   /****************************************************************************
   *                                                                           *
   * Expose the lodash installed in Sails core as a global variable. If this   *
