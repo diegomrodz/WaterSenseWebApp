@@ -26,7 +26,7 @@ var  FT_WEIGHT_B = -1.680;
 var  FT_WEIGHT_C = 0.3325;
 
 // Pesos para equação do nitrogênio total
-var  NT_WEIGHT_A = 98.34;
+var  NT_WEIGHT_A = 98.96;
 var  NT_WEIGHT_B = -0.2232;
 var  NT_WEIGHT_C = -0.006457;
 

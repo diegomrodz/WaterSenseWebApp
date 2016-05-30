@@ -765,8 +765,7 @@
 
             SensorSignalRepository.daily_avg($routeParams.sensorId, 20, function (data) {
               $scope.$apply(function () {
-                data.reverse();
-
+                
                 $scope.daily_avg = _.last(data);
 
                 if ($scope.sensor.ext_temp_active) {
@@ -837,7 +836,6 @@
             
               PeriodicMeasurementRepository.last20($routeParams.sensorId, "dissolved_o2", function (data) {
                 $scope.$apply(function () {
-                  data.reverse();
                   
                   $scope.dissolvedO2Dataset.labels = _.map(data, function (e, key) {
                     if (data.length <= 6) return formatDateDaily(e.createdAt);
@@ -862,7 +860,6 @@
             
               PeriodicMeasurementRepository.last20($routeParams.sensorId, "fecal_matter", function (data) {
                 $scope.$apply(function () {
-                  data.reverse();
                   
                   $scope.fecalMatterDataset.labels = _.map(data, function (e, key) {
                     if (data.length <= 6) return formatDateDaily(e.createdAt);
@@ -887,7 +884,6 @@
             
               PeriodicMeasurementRepository.last20($routeParams.sensorId, "dbo", function (data) {
                 $scope.$apply(function () {
-                  data.reverse();
                   
                   $scope.dboDataset.labels = _.map(data, function (e, key) {
                     if (data.length <= 6) return formatDateDaily(e.createdAt);
@@ -912,7 +908,6 @@
             
               PeriodicMeasurementRepository.last20($routeParams.sensorId, "total_nitrogen", function (data) {
                 $scope.$apply(function () {
-                  data.reverse();
                   
                   $scope.nitrogenTotalDataset.labels = _.map(data, function (e, key) {
                     if (data.length <= 6) return formatDateDaily(e.createdAt);
@@ -937,7 +932,6 @@
             
               PeriodicMeasurementRepository.last20($routeParams.sensorId, "total_phosphorus", function (data) {
                 $scope.$apply(function () {
-                  data.reverse();
                   
                   $scope.phosphorusTotalDataset.labels = _.map(data, function (e, key) {
                     if (data.length <= 6) return formatDateDaily(e.createdAt);
@@ -962,7 +956,6 @@
             
               PeriodicMeasurementRepository.last20($routeParams.sensorId, "turbidity", function (data) {
                 $scope.$apply(function () {
-                  data.reverse();
                   
                   $scope.turbidityDataset.labels = _.map(data, function (e, key) {
                     if (data.length <= 6) return formatDateDaily(e.createdAt);
@@ -987,7 +980,6 @@
             
               PeriodicMeasurementRepository.last20($routeParams.sensorId, "total_solids", function (data) {
                 $scope.$apply(function () {
-                  data.reverse();
                   
                   $scope.totalSolidsDataset.labels = _.map(data, function (e, key) {
                     if (data.length <= 6) return formatDateDaily(e.createdAt);

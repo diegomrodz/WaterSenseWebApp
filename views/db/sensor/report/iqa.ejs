@@ -1,0 +1,30 @@
+<div class="row" style="margin-top: 20px;">
+  <h3 style="text-transform: uppercase;">{{ sensor.nickname }}</h3>
+  <h4>Nova Relatório de Qualidade da Água</h4>
+</div>
+
+<div class="h-10"></div>
+
+<div class="col-sm-12 col-md-12 col-lg-6 col-lg-offset-3 invoice">
+  <fieldset>
+    <legend>Dados do Relatório</legend>
+
+    <fieldset class="form-group m-b-20">
+      <input ng-model="institution" type="text" class="form-control" placeholder="Instituição Requerente">
+    </fieldset>
+
+    <fieldset class="form-group m-b-20">
+      <input ng-model="resp" type="text" class="form-control" placeholder="Responsável">
+    </fieldset>
+    
+    <fieldset class="form-group m-b-20">
+      <textarea ng-model="resp" type="text" class="form-control" placeholder="Observações"></textarea>
+    </fieldset>
+    
+
+  </fieldset>
+
+
+  <button ng-click="generateReport()" type="button" class="btn btn-success m-r-10 m-b-10 pull-right">Gerar Relatório</button>
+
+</div>
