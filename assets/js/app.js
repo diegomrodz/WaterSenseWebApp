@@ -339,7 +339,7 @@
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.last1000(s.id, function (records) {
+            SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
@@ -406,9 +406,8 @@
 
               $scope.$apply(function () {
                 $scope.dailyLuminosityDataset.labels = _.map(records, function (e, key) {
-                  //var d = digestDate(e.DATA);
-                  
-                  return formatHour(new Date(e.createdAt));
+                  var d = digestDate(e.DATA);
+                  return formatHour(d);
                 });
                 
                 $scope.dailyLuminosityDataset.series = [
