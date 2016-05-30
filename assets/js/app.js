@@ -339,7 +339,7 @@
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
+            SensorSignalRepository.last1000(s.id, function (records) {
               records.reverse();
 
               $scope.$apply(function () {
