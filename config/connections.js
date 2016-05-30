@@ -46,7 +46,8 @@ module.exports.connections = {
      port: 3306,
      user: 'water_sense', //optional
      password: 'water_sense123', //optional
-     database: 'water_sense' //optional
+     database: 'water_sense', //optional
+     timezone: 'utc'
    },
    
    herokuMySqlServer: {
@@ -55,7 +56,8 @@ module.exports.connections = {
      port: 3306,
      user: 'bb1f47dae7a2f8', //optional
      password: '1bb48952', //optional
-     database: 'heroku_46e70b1a069c01a' //optional
+     database: 'heroku_46e70b1a069c01a', //optional
+     timezone: 'utc'
    }
    
 
