@@ -12,7 +12,7 @@ var CUBATAO_CID = "BRXX0375";
 
 module.exports = {
 	
-    test: function (req, res) {
+    sensor: function (req, res) {
         async.waterfall([
             
             function (callback) {
