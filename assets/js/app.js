@@ -1,12 +1,13 @@
 (function ($, angular, _) {
   var WaterSenseApplication = angular.module('WaterSenseApplication', ['ngRoute', 'angular-chartist', 'amChartsDirective', 'ngMap']);
+  var APP_URL = $("meta[name=app_url]").attr('content');
 
   function url_view(path) {
-    return 'http://water-sense.herokuapp.com/view' + path;
+    return  APP_URL + '/view' + path;
   }
 
   function url_api(path) {
-    return 'http://water-sense.herokuapp.com' + path;
+    return APP_URL + path;
   }
 
   function digestDate(dateString) {

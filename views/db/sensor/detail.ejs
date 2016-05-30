@@ -141,7 +141,7 @@
       <h4>Temperatura Externa
         <div style="float: right;">
           <a href="#/sensor/{{sensor.id}}/ext_temp/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/SensorSignal/all_csv?sensor={{sensor.id}}&q=ext_temp"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/SensorSignal/all_csv?sensor={{sensor.id}}&q=ext_temp"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/ext_temp/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -156,7 +156,7 @@
       <h4>Temperatura da Água
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/water_temp/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/SensorSignal/all_csv?sensor={{sensor.id}}&q=water_temp"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/SensorSignal/all_csv?sensor={{sensor.id}}&q=water_temp"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/water_temp/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -170,7 +170,7 @@
       <h4>Luminosidade
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/luminosity/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/SensorSignal/all_csv?sensor={{sensor.id}}&q=luminosity"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/SensorSignal/all_csv?sensor={{sensor.id}}&q=luminosity"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/luminosity/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -184,7 +184,7 @@
       <h4>pH
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/ph/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/SensorSignal/all_csv?sensor={{sensor.id}}&q=ph"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/SensorSignal/all_csv?sensor={{sensor.id}}&q=ph"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/ph/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -198,7 +198,7 @@
       <h4>Oxigênio Dissolvido
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/dissolved_o2/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/dissolved_o2/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -212,7 +212,7 @@
       <h4>Coliformes Fecais ou Termotolerantes
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/fecal_matter/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=fecal_matter"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=fecal_matter"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/fecal_matter/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -226,7 +226,7 @@
       <h4>Demanda Bioquímica de Oxigênio (DBO5,20)
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/dbo/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dbo"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dbo"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/dbo/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -240,7 +240,7 @@
       <h4>Nitrogênio Total
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/total_nitrogen/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/total_nitrogen/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -254,7 +254,7 @@
       <h4>Fósforo Total
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/total_phosphorus/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=total_phosphorus"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=total_phosphorus"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/total_phosphorus/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -268,7 +268,7 @@
       <h4>Turbídez
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/turbidity/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=turbidity"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=turbidity"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/turbidity/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
@@ -282,7 +282,7 @@
       <h4>Sólidos Totais ou Suspensos
         <div style="float:right;">
           <a href="#/sensor/{{sensor.id}}/total_solids/info"><i class="fa fa-info-circle hidden-print"></i></a>
-          <a href="http://water-sense.herokuapp.com/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download hidden-print"></i></a>
+          <a href="<%= app_url %>/PeriodicMeasurement/all_csv?sensor={{sensor.id}}&q=dissolved_o2"><i class="fa fa-download hidden-print"></i></a>
           <a href="#/sensor/{{sensor.id}}/total_solids/control" title="Monitorar Variável"><i class="fa fa-line-chart hidden-print"></i></a>
         </div>
       </h4>
