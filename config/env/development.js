@@ -18,7 +18,7 @@ module.exports = {
    ***************************************************************************/
 
     models: {
-       connection: 'localMySqlServer'
+       connection: 'herokuMySqlServer'
     }
 
 };
