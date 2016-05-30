@@ -2,11 +2,11 @@
   var WaterSenseApplication = angular.module('WaterSenseApplication', ['ngRoute', 'angular-chartist', 'amChartsDirective', 'ngMap']);
 
   function url_view(path) {
-    return 'http://localhost:1337/view' + path;
+    return 'http://water-sense.herokuapp.com/view' + path;
   }
 
   function url_api(path) {
-    return 'http://localhost:1337' + path;
+    return 'http://water-sense.herokuapp.com' + path;
   }
 
   function digestDate(dateString) {
