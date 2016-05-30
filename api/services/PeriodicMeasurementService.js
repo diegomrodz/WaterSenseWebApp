@@ -2,7 +2,7 @@
 module.exports = {
     
     getLast: function (sensor, idx, callback) {
-        var query = "SELECT * FROM water_sense.periodicmeasurement "             +
+        var query = "SELECT * FROM periodicmeasurement "             +
                     "WHERE sensor = " + sensor + " AND variable = '" + idx + "' "  +
                     "ORDER BY createdAt DESC "                                   +               
                     "LIMIT 0, 1";

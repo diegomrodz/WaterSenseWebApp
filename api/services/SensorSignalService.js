@@ -36,7 +36,7 @@ module.exports = {
                   AVG(water_temp) AS `water_temp`,                  \
                   AVG(luminosity) AS `luminosity`,                  \
                   AVG(ph) AS `ph`                                   \
-                FROM water_sense.sensorsignal "                     +
+                FROM sensorsignal "                                 +
                 "WHERE sensor = " + options.sensor + " "            +
                 "GROUP BY `DATA` "                                  +
                 "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y') DESC "    +
@@ -55,7 +55,7 @@ module.exports = {
                   AVG(water_temp) AS `water_temp`,                      \
                   AVG(luminosity) AS `luminosity`,                      \
                   AVG(ph) AS `ph`                                       \
-                FROM water_sense.sensorsignal "                         +
+                FROM sensorsignal "                                     +
       "WHERE sensor = " + options.sensor + " "                          +
       "GROUP BY `DATA` "                                                +
       "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y %h') DESC "               +
@@ -74,7 +74,7 @@ module.exports = {
                   AVG(water_temp) AS `water_temp`,                          \
                   AVG(luminosity) AS `luminosity`,                          \
                   AVG(ph) AS `ph`                                           \
-                FROM water_sense.sensorsignal "                             +
+                FROM sensorsignal "                                         +
       "WHERE sensor = " + options.sensor + " "                              +
       "GROUP BY `DATA` "                                                    +
       "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y %h:%i') DESC "                +
