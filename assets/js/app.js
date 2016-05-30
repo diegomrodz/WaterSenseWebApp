@@ -406,8 +406,9 @@
 
               $scope.$apply(function () {
                 $scope.dailyLuminosityDataset.labels = _.map(records, function (e, key) {
-                  var d = digestDate(e.DATA);
-                  return formatHour(d);
+                  //var d = digestDate(e.DATA);
+                  
+                  return formatHour(new Date(e.createdAt));
                 });
                 
                 $scope.dailyLuminosityDataset.series = [
