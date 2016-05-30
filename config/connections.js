@@ -52,6 +52,7 @@ module.exports.connections = {
    herokuMySqlServer: {
      adapter: 'sails-mysql',
      host: 'mysql://us-cdbr-iron-east-03.cleardb.net',
+     port: 3306,
      user: 'bb1f47dae7a2f8', //optional
      password: '1bb48952', //optional
      database: 'heroku_46e70b1a069c01a' //optional
