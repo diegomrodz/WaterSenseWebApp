@@ -7,17 +7,19 @@
 <div style="width: 100%; height: 487px; padding-top: 15px; margin-bottom: 20px;" class="col-sm-12 col-xs-12 col-md-12 invoice">
   <h5>Gráfico Diário</h5>
 
-  <div class="h-10"></div>
-
-  <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="dailyExtTempDataset" chartist-chart-type="Line"></chartist>    
+  <am-chart id="dailyExtTempChart" options="dailyChartOptions" height="100%" width="100%"></am-chart>
 </div>
 
 
-<div style="width: 100%; height: 487px; padding-top: 15px;" class="col-sm-12 col-xs-12 col-md-12 invoice">
+<div style="width: 100%; height: 487px; padding-top: 15px; margin-bottom: 20px;" class="col-sm-12 col-xs-12 col-md-12 invoice">
+  <h5>Gráfico Semanal</h5>
+
+  <am-chart id="weeklyExtTempChart" options="weeklyChartOptions" height="100%" width="100%"></am-chart>
+</div>
+
+<div style="width: 100%; height: 487px; padding-top: 15px; margin-bottom: 20px;" class="col-sm-12 col-xs-12 col-md-12 invoice">
   <h5>Gráfico Mensal</h5>
 
-  <div class="h-10"></div>
-
-  <chartist class="ct-chart" chartist-chart-options="chartOptions" chartist-data="weeklyExtTempDataset" chartist-chart-type="Line"></chartist>    
+  <am-chart id="monhtlyExtTempChart" options="monthlyChartOptions" height="100%" width="100%"></am-chart>
 </div>
 

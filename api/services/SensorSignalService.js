@@ -32,7 +32,7 @@ module.exports = {
 
   getDailyAverage: function (options, callback) {
     var query = "SELECT                                             \
-                  DATE_FORMAT(createdAt,'%d/%m/%Y') AS `DATA`,      \
+                  DATE_FORMAT(createdAt, '%Y-%m-%d') AS `DATA`,      \
                   AVG(ext_temp) AS `ext_temp`,                      \
                   AVG(water_temp) AS `water_temp`,                  \
                   AVG(luminosity) AS `luminosity`,                  \
@@ -40,7 +40,7 @@ module.exports = {
                 FROM sensorsignal "                                 +
                 "WHERE sensor = " + options.sensor + " "            +
                 "GROUP BY `DATA` "                                  +
-                "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y') DESC "    +
+                "ORDER BY STR_TO_DATE(`DATA`, '%Y-%m-%d') "    +
                 "LIMIT 0, " + (options.limit || 1) + ";";
 
     SensorSignal.query(query, function (err, records) {
@@ -51,7 +51,7 @@ module.exports = {
   },
 
   getHourlyAverage: function (options, callback) {
-    var query = "SELECT DATE_FORMAT(createdAt,'%d/%m/%Y %h') AS `DATA`, \
+    var query = "SELECT DATE_FORMAT(createdAt,'%Y-%m-%d %h:00:00') AS `DATA`, \
                   AVG(ext_temp) AS `ext_temp`,                          \
                   AVG(water_temp) AS `water_temp`,                      \
                   AVG(luminosity) AS `luminosity`,                      \
@@ -59,7 +59,7 @@ module.exports = {
                 FROM sensorsignal "                                     +
       "WHERE sensor = " + options.sensor + " "                          +
       "GROUP BY `DATA` "                                                +
-      "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y %h') DESC "               +
+      "ORDER BY STR_TO_DATE(`DATA`, '%Y-%m-%d %h:00:00') "              +
       "LIMIT 0, " + (options.limit || 1) + ";";
 
     SensorSignal.query(query, function (err, records) {
@@ -70,7 +70,7 @@ module.exports = {
   },
 
   getMinuteAverage: function (options, callback) {
-    var query = "SELECT DATE_FORMAT(createdAt,'%d/%m/%Y %h:%i') AS `DATA`,  \
+    var query = "SELECT DATE_FORMAT(createdAt,'%Y-%m-%d %h:%i:00') AS `DATA`,  \
                   AVG(ext_temp) AS `ext_temp`,                              \
                   AVG(water_temp) AS `water_temp`,                          \
                   AVG(luminosity) AS `luminosity`,                          \
@@ -78,7 +78,7 @@ module.exports = {
                 FROM sensorsignal "                                         +
       "WHERE sensor = " + options.sensor + " "                              +
       "GROUP BY `DATA` "                                                    +
-      "ORDER BY STR_TO_DATE(`DATA`, '%d/%m/%Y %h:%i') DESC "                +
+      "ORDER BY STR_TO_DATE(`DATA`, '%Y-%m-%d %h:%i:00') "                  +
       "LIMIT 0, " + (options.limit || 1) + ";";
 
     SensorSignal.query(query, function (err, records) {
