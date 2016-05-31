@@ -327,57 +327,74 @@
       function ($scope, $routeParams, $q, $timeout, SensorRepository, SensorSignalRepository) {
         $scope.sensor = {};
 
-        $scope.chartOptions = {
-          height: 430,
-          chartPadding: 20,
-          fullWidth: false
+        $scope.waterTempDataset = [];
+        
+        $scope.dataFromPromise = function(){
+          var deferred = $q.defer();
+
+          deferred.resolve(_.map($scope.waterTempDataset, function (e) {
+            return {
+              date: new Date(e.createdAt),
+              water_temp: e.water_temp
+            }
+          }));
+          
+          return deferred.promise;
         };
 
-        $scope.dailyWaterTempDataset = {};
-        $scope.weeklyWaterTempDataset = {};
+        $scope.chartOptions = $timeout(function () {
+          return {
+            "type": "serial",
+            "theme": "light",
+            "marginRight": 80,
+            "autoMarginOffset": 20,
+            "marginTop": 7,
+            "data": $scope.dataFromPromise(),
+            "valueAxes": [{
+                "axisAlpha": 0.2,
+                "dashLength": 1,
+                "position": "left"
+            }],
+            "mouseWheelZoomEnabled": true,
+            "graphs": [{
+                "id": "g1",
+                "balloonText": "[[value]]",
+                "bullet": "round",
+                "bulletBorderAlpha": 1,
+                "bulletColor": "#FFFFFF",
+                "hideBulletsCount": 50,
+                "title": "Temperatura da Água",
+                "valueField": "water_temp",
+                "useLineColorForBulletBorder": true,
+                "balloon":{
+                    "drop":true
+                }
+            }],
+            "chartCursor": {
+              "limitToGraph":"g1"
+            },
+            "categoryField": "date",
+            "categoryAxis": {
+                "minPeriod": "mm",
+                "parseDates": true,
+                "axisColor": "#DADADA",
+                "dashLength": 1,
+                "minorGridEnabled": true
+            },
+            "export": {
+                "enabled": true
+            }
+          };
+        }, 2000);
 
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
 
-            SensorSignalRepository.hourly_avg(s.id, 24, function (records) {
-              var res = _.sortBy(records, function (record) { return digestDate(record.DATA) });
-
+            SensorSignalRepository.today(s.id, function (records) {
               $scope.$apply(function () {
-                $scope.dailyWaterTempDataset.labels = _.map(res, function (e, key) {
-                  var d = digestDate(e.DATA);
-                  return formatHour(d);
-                });
-                
-                $scope.dailyWaterTempDataset.series = [
-                  
-                  _.map(res, function (e, key) {
-                    return e.water_temp;  
-                  })
-                  
-                ];
+                $scope.waterTempDataset = records;
               });
-            });
-
-            SensorSignalRepository.hourly_avg(s.id, 24 * 7 * 30, function (records) {
-              records.reverse();
-
-              $scope.$apply(function () {
-                var avgs = calcDailyAverage(records);
-                
-                $scope.weeklyWaterTempDataset.labels = _.map(avgs, function (e, key) {
-                  return e.DATA;
-                });
-                
-                $scope.weeklyWaterTempDataset.series = [
-                  
-                  _.map(avgs, function (e, key) {
-                    return e.water_temp;  
-                  })
-                  
-                ];
-              });
-
             });
           });
         });
