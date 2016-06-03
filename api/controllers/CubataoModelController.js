@@ -76,10 +76,6 @@ module.exports = {
             function (signals, callback) {
                 var created = [];
                 
-                async.parallel(
-                    _.map(signals)
-                )
-                
                 _.map(signals, function (signal) {
                     SensorSignal.create(signal, function (err, obj) {
                         created.push(obj);
