@@ -13,6 +13,24 @@ var _4T3_WB = 1.8166;
 var _6T3_WA = 1.0346;
 var _6T3_WB = 1.3029;
 
+var ph_variation_table = {
+    0: 7.47, 1: 7.47, 2: 7.47, 3: 7.47,
+    4: 7.47, 5: 7.47, 6: 7.47, 7: 7.67,
+    8: 8.47, 9: 9.27, 10: 10.07, 11: 10.87,
+    12: 11.67, 13: 12.47, 14: 13.27, 15: 11.27,
+    16: 9.27, 17: 7.77, 18: 7.27, 19: 7.27,
+    20: 7.27, 21: 7.27, 22: 7.27, 23: 7.27
+};
+
+var luminosity_table = {
+    0: 0, 1: 0, 2: 0, 3: 0, 4: 0,
+    5: 0, 6: 0, 7: 204.241, 8: 1765.43,
+    9: 4924.18, 10: 11570.4, 11: 24750.8,
+    12: 33701.4, 13: 20855.79, 14: 9403.062,
+    15: 3913.062, 16: 1040.493, 17: 27.82767,
+    18: 0, 19: 0, 20: 0, 21: 0, 22: 0, 23: 0     
+};
+
 function TMAX(extTemp) {
     return TMAX_WA * extTemp + TMAX_WB;
 }
@@ -26,7 +44,7 @@ function _6T3(extTemp) {
 }
 
 function luminosity(hour) {
-    return -3e-6 * Math.pow(hour, 5) + 0.0019 * Math.pow(hour, 4) - 0.4556 * Math.pow(hour, 3) + 43.839 * Math.pow(hour, 2) + 1388.9 * hour + 9265.9;
+    return luminosity_table[hour] || 0;
 }
 
 function ph_from_wtemp(wtemp) {
@@ -34,7 +52,7 @@ function ph_from_wtemp(wtemp) {
 }
 
 function ph_from_hour(hour) {
-    return 2e-6 * Math.pow(hour, 4) - 0.0005 * Math.pow(hour, 3) + 0.0293 * Math.pow(hour, 2) - 0.5345 * hour + 9.5265;
+    return ph_variation_table[hour] || 7.47;
 } 
 
 module.exports = {
