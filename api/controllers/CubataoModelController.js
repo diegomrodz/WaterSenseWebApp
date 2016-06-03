@@ -30,7 +30,7 @@ module.exports = {
                 }, function (err, sensors) {
                     var signals = _.map(sensors, function (sensor) {
                         var signal = {};
-                        var hour = (new Date()).getHours() + Math.random();
+                        var hour = (new Date()).getHours();
                         
                         signal.sensor = sensor.id;
                         
