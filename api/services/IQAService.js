@@ -131,18 +131,26 @@ module.exports = {
     },
     
     IQA: function (bag, callback) {
-               
-        return callback(
-            (bag.o2_iqa ? Math.pow(bag.o2_iqa, IQA_O2_WEIGHT) : 1) *
-            (bag.cf_iqa ? Math.pow(bag.cf_iqa, IQA_CF_WEIGHT) : 1) *
-            (bag.ph_iqa ? Math.pow(bag.ph_iqa, IQA_PH_WEIGHT) : 1) *
-            (bag.dbo_iqa ? Math.pow(bag.dbo_iqa, IQA_DBO_WEIGHT) : 1) *
-            (bag.dt_iqa ? Math.pow(bag.dt_iqa, IQA_DT_WEIGHT) : 1) *
-            (bag.nt_iqa ? Math.pow(bag.nt_iqa, IQA_NT_WEIGHT) : 1) *
-            (bag.ft_iqa ? Math.pow(bag.ft_iqa, IQA_FT_WEIGHT) : 1) *
-            (bag.tu_iqa ? Math.pow(bag.tu_iqa, IQA_TU_WEIGHT) : 1) *
-            (bag.st_iqa ? Math.pow(bag.st_iqa, IQA_ST_WEIGHT) : 1)
-        );
+        
+        if (
+            bag.o2_iqa  && bag.cf_iqa  && bag.ph_iqa  &&
+            bag.dbo_iqa && bag.dt_iqa  && bag.nt_iqa  &&
+            bag.ft_iqa  && bag.tu_iqa  && bag.st_iqa
+        ) {
+            return callback(
+                Math.pow(bag.o2_iqa, IQA_O2_WEIGHT)     *
+                Math.pow(bag.cf_iqa, IQA_CF_WEIGHT)     *
+                Math.pow(bag.ph_iqa, IQA_PH_WEIGHT)     *
+                Math.pow(bag.dbo_iqa, IQA_DBO_WEIGHT)   *
+                Math.pow(bag.dt_iqa, IQA_DT_WEIGHT)     *
+                Math.pow(bag.nt_iqa, IQA_NT_WEIGHT)     *
+                Math.pow(bag.ft_iqa, IQA_FT_WEIGHT)     *
+                Math.pow(bag.tu_iqa, IQA_TU_WEIGHT)     *
+                Math.pow(bag.st_iqa, IQA_ST_WEIGHT)
+            );
+        }
+        
+        return callback(false);
     },
     
     calcIQA: function (bag, callback) {
@@ -151,7 +159,7 @@ module.exports = {
         result.DATA = bag.DATA;
         
         if (bag.water_temp) {
-            this.qDT(bag.water_temp, function (res) {
+            this.qDT(25 - bag.water_temp, function (res) {
                 result.dt_val = bag.water_temp;
                 result.dt_iqa = res;
             });

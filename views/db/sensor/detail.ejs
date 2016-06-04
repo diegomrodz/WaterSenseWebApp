@@ -58,43 +58,43 @@
             <td width="50%"><strong>Temp. Externa (Média Diária):</strong></td>
             <td>{{ formatValue(daily_avg.ext_temp) }} ºC</td>
           </tr>
-          <tr ng-if="sensor.fecal_matter_active">
+          <tr ng-if="sensor.fecal_matter_active && iqa_last.cf_val">
             <td width="50%"><strong>Coliformes Fecais (Última Med.):</strong></td>
             <td>{{ formatValue(iqa_last.cf_val) }} NMP/100ml</td>
           </tr>
-          <tr ng-if="sensor.dissolved_o2_active">
+          <tr ng-if="sensor.dissolved_o2_active && iqa_last.o2_val">
             <td width="50%"><strong>Oxigênio Dissolvido (Última Med.):</strong></td>
             <td>{{ formatValue(iqa_last.o2_val) }} % sat.</td>
           </tr>
-          <tr ng-if="sensor.dbo_active">
+          <tr ng-if="sensor.dbo_active && iqa_last.dbo_val">
             <td width="50%"><strong>DBO5,20 (Última Med.):</strong></td>
             <td>{{ formatValue(iqa_last.dbo_val) }} mg/L</td>
           </tr>
-          <tr ng-if="sensor.phosphorus_total_active">
+          <tr ng-if="sensor.phosphorus_total_active && iqa_last.ft_val">
             <td width="50%"><strong>Fósforo Total (Última Med.):</strong></td>
             <td>{{ formatValue(iqa_last.ft_val) }} mg/L</td>
           </tr>
-          <tr ng-if="sensor.total_nitrogen_active">
+          <tr ng-if="sensor.total_nitrogen_active && iqa_last.nt_val">
             <td width="50%"><strong>Nitrogênio Total (Última Med.):</strong></td>
             <td>{{ formatValue(iqa_last.nt_val) }} mg/L</td>
           </tr>
-          <tr ng-if="sensor.turbidity_active">
+          <tr ng-if="sensor.turbidity_active && iqa_last.tu_val">
             <td width="50%"><strong>Turbídez (Última Med.):</strong></td>
             <td>{{ formatValue(iqa_last.tu_val) }} UNT</td>
           </tr>
-          <tr ng-if="sensor.total_solids_active">
+          <tr ng-if="sensor.total_solids_active && iqa_last.st_val">
             <td width="50%"><strong>Sólidos Totais (Última Med.):</strong></td>
             <td>{{ formatValue(iqa_last.st_val) }} mg/L</td>
           </tr>
-          <tr>
+          <tr ng-if="iqa_last.IQA">
             <td width="50%"><strong>IQA (Medição Diária):</strong></td>
             <td>{{ formatValue(iqa_last.IQA) }}</td>
           </tr>
-          <tr>
+          <tr ng-if="iqa_last.IQA">
             <td width="50%"><strong>Qualidade segundo CONAMA:</strong></td>
-            <td>RUIM</td>
+            <td>{{ getConamaIndex(iqa_last.IQA) }}</td>
           </tr>
-          <tr>
+          <tr ng-if="iqa_last.IQA">
             <td width="50%"><strong>Qualidade segundo CETESB:</strong></td>
             <td>{{ getCetesbIndex(iqa_last.IQA) }}</td>
           </tr>

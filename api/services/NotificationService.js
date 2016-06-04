@@ -16,7 +16,7 @@ var smtpConfig = {
 var transporter = nodemailer.createTransport(smtpConfig);
 
 function formatDate(date) {
-    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+    return date.getDate() + "/" + (date.getMonth() + 1) + "/" + date.getFullYear();
 }
 
 function formatHour(date) {

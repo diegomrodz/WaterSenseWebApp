@@ -102,6 +102,27 @@
         
         return "ÓTIMA";
       };
+      
+      self.conamaIndex = function (iqa) {
+        if (iqa <= 25) {
+          return "PÉSSIMA";
+        }
+        
+        if (iqa <= 50) {
+          return "RUIM";
+        }
+        
+        if (iqa <= 70) {
+          return "ACEITÁVEL";
+        }
+        
+        if (iqa <= 90) {
+          return "BOA";
+        }
+        
+        return "ÓTIMA";
+      };
+      
     }
   ]);
 
@@ -983,14 +1004,21 @@
                   {
                     "dashLength": 6,
                     "inside": true,
-                    "label": "Limite Superior",
+                    "label": "Limite superior segundo Ministério da Saúde",
                     "lineAlpha": 1,
                     "value": 9.5
                 },
                 {
                     "dashLength": 6,
                     "inside": true,
-                    "label": "Limite Inferior",
+                    "label": "Limite superior segundo CONAMA",
+                    "lineAlpha": 1,
+                    "value": 9.0
+                },
+                {
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Limite inferior segundo Ministério da Saúde",
                     "lineAlpha": 1,
                     "value": 6.0
                 }]
@@ -1039,7 +1067,29 @@
             "valueAxes": [{
                 "axisAlpha": 0.2,
                 "dashLength": 1,
-                "position": "left"
+                "position": "left",
+                "guides": [
+                  {
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Limite superior segundo Ministério da Saúde",
+                    "lineAlpha": 1,
+                    "value": 9.5
+                },
+                {
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Limite superior segundo CONAMA",
+                    "lineAlpha": 1,
+                    "value": 9.0
+                },
+                {
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Limite inferior segundo Ministério da Saúde",
+                    "lineAlpha": 1,
+                    "value": 6.0
+                }]
             }],
             "mouseWheelZoomEnabled": true,
             "graphs": [{
@@ -1084,7 +1134,29 @@
             "valueAxes": [{
                 "axisAlpha": 0.2,
                 "dashLength": 1,
-                "position": "left"
+                "position": "left",
+                "guides": [
+                  {
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Limite superior segundo Ministério da Saúde",
+                    "lineAlpha": 1,
+                    "value": 9.5
+                },
+                {
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Limite superior segundo CONAMA",
+                    "lineAlpha": 1,
+                    "value": 9.0
+                },
+                {
+                    "dashLength": 6,
+                    "inside": true,
+                    "label": "Limite inferior segundo Ministério da Saúde",
+                    "lineAlpha": 1,
+                    "value": 6.0
+                }]
             }],
             "mouseWheelZoomEnabled": true,
             "graphs": [{
@@ -1401,6 +1473,7 @@
         };
         
         $scope.getCetesbIndex = IQA.cetesbIndex;
+        $scope.getConamaIndex = IQA.conamaIndex;
         
         SensorRepository.find($routeParams.sensorId, function (data) {
           $scope.$apply(function () {
@@ -1650,7 +1723,7 @@
               $scope.$apply(function () {
                 $scope.iqa_last = data[0];
                 
-                console.log(data);
+                console.log($scope.iqa_last);
               });
             });
 
