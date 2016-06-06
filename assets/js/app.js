@@ -1219,11 +1219,140 @@
     ]);
   
   WaterSenseApplication.controller('IQASensorControlCtrl', 
-    ['$scope', '$routeParams', 'SensorRepository',
-      function ($scope, $routeParams, SensorRepository) {
+    ['$scope', '$routeParams', '$q', '$timeout', 'SensorRepository', 'IQARepository',
+      function ($scope, $routeParams, $q, $timeout, SensorRepository, IQARepository) {
+        $scope.sensor = {};
+        
+        $scope.monthlyIQADataset = [];
+        $scope.annualyIQADataset = [];
+        
+        $scope.monthlyDataFromPromise = function () {
+          var deferred = $q.defer();
+          
+          deferred.resolve(_.map($scope.monhtlyIQADataset, function (e) {
+            return {
+              date: new Date(e.DATA),
+              iqa: e.IQA
+            }
+          }));
+          
+          return deferred.promise;
+        };
+        
+        $scope.annualyDataFromPromise = function () {
+          var deferred = $q.defer();
+          
+          deferred.resolve(_.map($scope.annualyIQADataset, function (e) {
+            return {
+              date: new Date(e.DATA),
+              iqa: e.IQA
+            }
+          }));
+          
+          return deferred.promise;
+        };
+        
+        $scope.monthlyChartOptions = $timeout(function () {
+          return {
+            "type": "serial",
+            "theme": "light",
+            "marginRight": 30,
+            "autoMarginOffset": 20,
+            "marginTop": 7,
+            "data": $scope.monthlyDataFromPromise(),
+            "valueAxes": [{
+                "axisAlpha": 0.2,
+                "dashLength": 1,
+                "position": "left"
+            }],
+            "mouseWheelZoomEnabled": true,
+            "graphs": [{
+                "id": "g1",
+                "fillAlphas": 0.4,
+                "balloonText": "[[value]]",
+                "bullet": "round",
+                "bulletBorderAlpha": 1,
+                "bulletColor": "#FFFFFF",
+                "hideBulletsCount": 5,
+                "title": "IQA",
+                "valueField": "iqa",
+                "useLineColorForBulletBorder": true,
+                "balloon":{
+                    "drop":true
+                }
+            }],
+            "chartCursor": {
+              "limitToGraph":"g1"
+            },
+            "categoryField": "date",
+            "categoryAxis": {
+                "minPeriod": "ss",
+                "parseDates": true,
+                "axisColor": "#DADADA",
+                "dashLength": 1,
+                "minorGridEnabled": true
+            },
+            "export": {
+                "enabled": true
+            }
+          };
+        }, 3000);
+        
+        $scope.annualyChartOptions = $timeout(function () {
+          return {
+            "type": "serial",
+            "theme": "light",
+            "marginRight": 30,
+            "autoMarginOffset": 20,
+            "marginTop": 7,
+            "data": $scope.annualyDataFromPromise(),
+            "valueAxes": [{
+                "axisAlpha": 0.2,
+                "dashLength": 1,
+                "position": "left"
+            }],
+            "mouseWheelZoomEnabled": true,
+            "graphs": [{
+                "id": "g1",
+                "fillAlphas": 0.4,
+                "balloonText": "[[value]]",
+                "bullet": "round",
+                "bulletBorderAlpha": 1,
+                "bulletColor": "#FFFFFF",
+                "hideBulletsCount": 5,
+                "title": "IQA",
+                "valueField": "iqa",
+                "useLineColorForBulletBorder": true,
+                "balloon":{
+                    "drop":true
+                }
+            }],
+            "chartCursor": {
+              "limitToGraph":"g1"
+            },
+            "categoryField": "date",
+            "categoryAxis": {
+                "minPeriod": "ss",
+                "parseDates": true,
+                "axisColor": "#DADADA",
+                "dashLength": 1,
+                "minorGridEnabled": true
+            },
+            "export": {
+                "enabled": true
+            }
+          };
+        }, 3000);
+        
         SensorRepository.find($routeParams.sensorId, function (s) {
           $scope.$apply(function () {
             $scope.sensor = s;
+          
+            IQARepository.daily(s.id, 30, function (iqas) {
+              $scope.$apply(function () {
+                $scope.monthlyIQADataset = iqas;
+              });
+            });
           });
         });
       }

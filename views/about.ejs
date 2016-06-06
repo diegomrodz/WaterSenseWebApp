@@ -1,0 +1,104 @@
+<div style="width: 100%;">
+    <img src="http://water-sense.herokuapp.com/images/banner.png" style="width: 100%; height: 230px;">
+    
+    <h2 style="font-family: verdana;">Introdução</h2>
+    
+        <p style="font-family: verdana; margin-left: 20px;">
+            Este projeto foi desenvolvido por Diego Rodrigues (<a href="mailto:diego.mrodrigues@outlook.com">diego.mrodrigues@outlook.com</a>), 
+            com ajuda e orientação do professor Fernando Fabrini (<a href="mailto:fernando.fabbrini@sp.senac.br">fernando.fabbrini@sp.senac.br</a>) para ser
+            apresentado na XII Semana Unificada de Apresentações do Centro Universitário Senac.
+        </p>
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+            Para maiores detalhes técnicos baixe e leia o artigo que acompanha este projeto: <a href="http://water-sense.herokuapp.com/files/artigo.pdf" target="_blank">arquivo pdf</a>.
+        </p>
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+            Para contribuir com esta iniciativa, acesse o seu repositório github através do link: <a href="http://github.com/diegomrodz/WaterSenseWebApp" target="_blank">
+            http://github.com/diegomrodz/WaterSenseWebApp</a>
+        </p>
+    
+    <h2 style="font-family: verdana;">Água e sua qualidade</h2>
+    
+        <p style="font-family: verdana; margin-left: 20px;">
+            A água potável é o mais importante recurso neste planeta, pois sua dispoinibilidade segura e adequada é vital para a sobrevivência de todos organismos vivos 
+            e para o funcionamento dos ecossistemas, comunidades e economias. Entretanto, devido a expanção das atividades humanas e as crescentes mudanças climáticas, a
+            qualidade deste escasso recurso tem diminuido muito.
+        </p>
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+                No Brasil, segundo o IBGE, apesar de concentrar 12% de toda água doce de superfície do planeta, possui sérios problemas no que diz respeito à proteção, qualidade
+            e distribuição da água. Por isso a criação de iniciativas que ajudem a proteção dos recursos hídricos é muito importante.
+        </p>
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+                Diante desta realidade, proponho a criação de uma arquitetura que integre hardware e software para monitorar, informar e notificar membros de uma comunidade sobre
+            o estado da fonte de água para uso diário. 
+        </p>
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+                A arquitetura é composta de dispositivos compostos por sensores que fariam medições de aspectos físico-químicos da água, como temperatura e pH, e enviariam as medições
+            para um computador receptor. Este seria mantido pela comunidade e atuaria como um intermediário entre os dispositivos e a aplicação hospedada no servidor. Assim, após
+            os dados serem armazenados e analisados, a aplicação web forneceria várias funcionalidades que ajudariam a comunidade compreender a qualidade da água usada em seu dia-a-dia.
+        </p>
+    
+        <img src="http://water-sense.herokuapp.com/images/arquitetura_esquema.png" style="margin:0px auto; display: block;">
+    
+    <h2 style="font-family: verdana;">Vila dos Pescadores, Cubatão</h2>
+    
+        <p style="font-family: verdana; margin-left: 20px;">
+            Afim de testar a arquitetura, criei um modelo matemárico que simula as condições encontradas na comunidade de Vila dos Pescadores, em Cubatão. Além de simular o cenário onde
+            haveria um despejo químico de uma indústria ficticia no Rio Maria Ribeiro, uma afluente do Rio Casqueiro, de uma substância química que eleva o pH da água. Assim afetando o 
+            metabolismo da vida aquática da região, provocando escassez de alimento para comunidade. 
+        </p>
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+            Essa comunidade originou-se na década de 1960 quando um grupo de pescadores artesanais se instalou no local, visando a exploração do Rio Casqueiro, fonte geradora de seu sustento. A partir de 1972, devido ao problema habitacional, verificou-se um crescente fluxo populacional para esta área. Esta situação agravou-se quando a empresa santista de economia mista Progresso e Desenvolvimento de Santos S.A. (Prodesan) iniciou a execução de um aterro sanitário na margem oposta do Rio Casqueiro, como mostrado na figura 8, o que obrigou a população que ocupava essa área se deslocar.
+        </p>
+    
+        <div style="width: 533;display:block; margin: 0px auto;">
+            <img src="http://water-sense.herokuapp.com/images/vp_1.png" style="display:inline;">
+            <img src="http://water-sense.herokuapp.com/images/vp_2.png" style="display:inline;">
+        </div>
+    
+        <p style="font-family: verdana; margin-left: 20px;">
+            Atualmente a comunidade abriga cerca de 9.244 pessoas que vivem em um ambiente precário com baixas condições de saneamento básico, onde o contanto com a água é constante. Conforme mostrado na figura 9. E a maior fonte de renda provem da pesca realizada nos rios Casqueiros e Cascalho.
+        </p>
+    
+        <p style="font-family: verdana; margin-left: 20px;">
+          Nota-se que esta comunidade tem uma dependência econômica e social da água que os cerca, o que os torna extremamente sensíveis a qualquer tipo de alteração em sua qualidade. Por isso, identificamos que esta comunidade se beneficiaria bastante de um sistema de monitoramento e, principalmente de uma aplicação que permita uma fácil compreensão dos dados e forneça informações importantes de como remediar a situação desta água.  
+        </p>
+    
+        <img src="http://water-sense.herokuapp.com/images/vp_top.png" style="margin:0px auto; display: block;">
+    
+        <p style="font-family: verdana; margin-left: 20px;">
+           Foi definido que o melhor arranjo dos sensores seria posicioná-los da seguinte forma: dois sensores na saída do Rio Maria Ribeiro, para detectar caso haja despejo tóxico das indústrias que atuam em Cubatão e dos portos localizados acima no Rio Casqueiro; dois sensores nas extremidades da comunidade, para detectar o despejo de esgoto urbano sem tratamento.  
+        </p>
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+            Assim é esperado a detecção não só variações nos níveis de qualidade da água, mas também ter uma noção da fonte desta variação. O que com certeza ajudaria na comunicação às autoridades, além de aumentar o tempo de resposta da comunidade frente à um problema.
+        </p>
+    
+        <p style="font-family: verdana; margin-left: 20px;">
+            Diante deste cenário, o modelo matemático (explicado melhor no artigo que acompanha este projeto) geraria os seguintes dados para o teste da arquitetura e das funcionalidades da 
+            aplicação. A variação do pH, aspecto mais importante do modelo, é observada no período de um dia da seguinte forma:
+        </p>
+        
+        <img src="http://water-sense.herokuapp.com/images/vp_ph_data.png" style="margin:0px auto; display: block;">
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+            Então, após um dia de execução deste modelo, o usuário que ir visitar a página do sensor de pH do dispositivo no Rio Maria Ribeiro irá verificar que houveram, 
+            por exemplo, medições acima do controle superior, definido segundo portaria Nº 2.914, de dezembro de 2011, do Ministério da Saúde entre 15:30 e 16:0 no mesmo dia, 
+            chegando a medidas do pH acima de 11.
+        </p>
+        
+        <p style="font-family: verdana; margin-left: 20px;">
+            Assim, os responsáveis pela comunidade poderão recolher os dados do sistema, montar um relatório e enviá-lo a autoridades para que as devidas providências sejam tomadas. Neste caso, regularizar o vazamento tóxico no rio Maria Ribeiro.
+        </p>
+    
+        <p style="font-family: verdana; margin-left: 20px;">
+            Apesar de uma variação desta proporção em um curto de período parecer absurda, ela serve seu propósito de demonstrar como uma comunidade que está sob constante contanto com águas que passam por zonas industriais pode agir antes que seu meio seja afetado. 
+        </p>
+    
+    
+</div>
