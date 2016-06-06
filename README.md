@@ -6,7 +6,11 @@ Acesse a versão 1.0.0 do projeto através do link: [water-sense.herokuapp.com](
 
 ## Aplicação Web
 
-Principal parte da arquitetura, a aplicação roda em cima da web-franework Sails.js, que por sua vez roda em cima de uma servidor Node.js. Nela são feitas a visualização dos dados obtidos pelos dispositivos e enviado pelo software receptor, assim como a geração de relatórios, calcúlo de índices de qualidade da água segundo as legislações vigentes, e notificação de alterações nos parâmetros sob monitoramento contínuo. 
+Principal parte da arquitetura, a aplicação roda em cima da web-franework Sails.js, que por sua vez roda em cima de uma servidor Node.js. Nela são feitas a visualização dos dados obtidos pelos dispositivos e enviado pelo software receptor, assim como a geração de relatórios, calcúlo de índices de qualidade da água segundo as legislações vigentes, e notificação de alterações nos parâmetros sob monitoramento contínuo.
+
+## Instruções
+
+## TODO
 
 ## Desenvolvedor
 
