@@ -7,19 +7,6 @@ Acesse a versão 1.0.0 do projeto através do link: [water-sense.herokuapp.com](
 ## Aplicação Web
 
 
-## Instruções
-
-Clone o repositório no seu pc e depois rode o comando
-
-```
-npm install
-```
-
-Verifique se o programa rodou corretamente. Se não, boa sorte em achar o conflito, xD.
-
-## TODO
-
-
 ## Desenvolvedor
 
 Este projeto foi desenvolvido por Diego Rodrigues <[diego.mrodrigues@outlook.com](mailto:diego.mrodrigues@outlook.com)>, aluno do Bacharelado em Engenharia da Computação no Senac São Paulo.
